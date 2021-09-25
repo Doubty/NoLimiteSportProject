@@ -13,7 +13,7 @@
       <v-list-item class="px-2">
         <v-list-item-avatar>
           <v-img
-            src="https://scontent-for1-1.xx.fbcdn.net/v/t1.6435-9/217484040_2322955651170529_3311200904330708213_n.jpg?_nc_cat=109&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=RNRTQl_acq0AX8Qzg6f&_nc_ht=scontent-for1-1.xx&oh=1e4b8bb5dfa4ec9aa4ab72a2b3c99f8a&oe=61459A20"
+            src="https://scontent.fmvf1-1.fna.fbcdn.net/v/t1.6435-9/240824171_2363578050441622_5192364612176724813_n.jpg?_nc_cat=100&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=0xlWj9Wy2bYAX9wFj17&_nc_ht=scontent.fmvf1-1.fna&oh=74228cae81f15de711c624211a3b881f&oe=61703F73"
           ></v-img>
         </v-list-item-avatar>
 
@@ -92,15 +92,12 @@ export default class Dashboard extends Vue {
 }
 </script>
 
-
 <style scoped lang="stylus">
-
-
 .theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
   color: white;
 }
 
 .theme--light.v-icon {
-    color: white;
+  color: white;
 }
 </style>
