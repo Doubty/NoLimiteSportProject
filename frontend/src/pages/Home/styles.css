@@ -1,0 +1,21 @@
+.events_section {
+    margin-top: 60px;
+}
+
+.title_section {
+    font-family: 'Roboto', sans-serif;
+}
+
+.events_section .container .seeMore {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    margin-top: 30px;
+    color: #fff;
+    padding: 10px 30px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #8F17CB;
+    border: none;
+    border-radius: 8px;
+}
