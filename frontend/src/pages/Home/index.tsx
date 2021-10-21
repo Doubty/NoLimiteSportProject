@@ -1,4 +1,5 @@
 import EventCard from "../../components/EventCard";
+import Footer from "../../components/Footer";
 import InstagramSection from "../../components/InstagramSection";
 import NavBar from "../../components/NavBar";
 //import { SportEvent } from "../../types/event";
@@ -78,7 +79,8 @@ const Home = () => {
             </section>
 
             <InstagramSection/>
-            
+
+            <Footer/>            
         </>
     );
 }
