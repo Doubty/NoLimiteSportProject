@@ -1,0 +1,32 @@
+.instagram_section {
+    margin-top: 80px;
+    height: 698px;
+    background-image: url('../../assets/img/instaSection.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.instagram_section_paragr {
+    position: absolute;
+    width: 25%;
+    top: 330px;
+    left: 70px;
+    color: white;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.instagram_section .instagram_link {
+    position: relative;
+    font-weight: bold;
+    font-size: 1.6rem;
+    margin-top: 80px;
+    color: #2b2b2b;
+    padding: 10px;
+    text-decoration: none;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #fff;
+    border: none;
+    border-radius: 8px;
+}
