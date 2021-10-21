@@ -4,9 +4,3 @@ html, body {
     height: 100%;
     font-family: "Poppins", sans-serif;
 }
-
-#root {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-}

@@ -1,4 +1,5 @@
 import EventCard from "../../components/EventCard";
+import InstagramSection from "../../components/InstagramSection";
 import NavBar from "../../components/NavBar";
 //import { SportEvent } from "../../types/event";
 import "./styles.css";
@@ -69,6 +70,14 @@ const Home = () => {
                     <button type="button" className="seeMore">Ver mais</button>
                 </div>
             </section>
+
+            <section className="motivationalVitrine">
+                <p className="motivationalVitrine_paragr">
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.”
+                </p>
+            </section>
+
+            <InstagramSection/>
             
         </>
     );
