@@ -1,0 +1,36 @@
+.allEvents_section {
+    margin-top: 60px;
+}
+
+.allEvents_section .container .seeMore {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    margin-top: 80px;
+    color: #fff;
+    padding: 10px 30px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #8F17CB;
+    border: none;
+    border-radius: 8px;
+}
+
+.allEvents_section .searchBar {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.allEvents_section #searchEvent {
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid #101622;
+    width: 100%;
+}
+
+.allEvents_section .icon-search {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 30px;
+}
