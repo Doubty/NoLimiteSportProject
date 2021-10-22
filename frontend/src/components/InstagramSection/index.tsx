@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import "./styles.css";
 
 const InstagramSection = () => {
@@ -8,7 +7,7 @@ const InstagramSection = () => {
                 <p className="instagram_section_paragr">
                 Siga-nos no Instagram
                 <br/>
-                <Link to="https://www.instagram.com/nolimitesportce/" className="instagram_link">@nolimitesportce</Link>
+                <a href="https://www.instagram.com/nolimitesportce/" rel="noreferrer" target="_blank" className="instagram_link">@nolimitesportce</a>
                 </p>
             </section>
         </>

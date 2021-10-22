@@ -1,0 +1,21 @@
+.team_card {
+    margin: 20px;
+    width: 30%;
+}
+
+.team_card .teammate_perfil {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.team_card .team_info {
+    text-align: center;
+    margin-top: 20px;
+}
