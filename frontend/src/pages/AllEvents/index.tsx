@@ -21,7 +21,7 @@ const AllEvents = () => {
             return;
         }
 
-        const searchedValues = events.filter(event => event.title.includes(value));
+        const searchedValues = events.filter(event => event.titulo.includes(value));
         setEvents(searchedValues);
     }
 
@@ -40,7 +40,7 @@ const AllEvents = () => {
                             </div>
 
                             {events.map((event) =>
-                                <InfoCard key={event.id} title={event.title} description={event.description} img_url={event.img_url}/>
+                                <InfoCard url={`/event/${event.id}`} key={event.id} title={event.titulo} description={event.descricao} img_url={event.banner_url}/>
                             )}
                     </div>
                 </div>

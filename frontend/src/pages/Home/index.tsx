@@ -19,7 +19,7 @@ const Home = () => {
                             <SectionTitle text="Eventos"/>
 
                             {mockEvents.slice(0, 6).map((event) =>
-                                <InfoCard title={event.title} description={event.description} img_url={event.img_url}/>
+                                <InfoCard url={"/event/" + event.id} title={event.titulo} description={event.descricao} img_url={event.banner_url}/>
                             )}
                     </div>
                     <Link to="allEvents" className="seeMore">Ver mais</Link>
