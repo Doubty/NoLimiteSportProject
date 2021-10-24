@@ -17,7 +17,7 @@ const Login = () =>  {
                             <button type="submit" className="btn_login">Entrar</button>
                         </form>
                         <br/>
-                        <Link to="/" className="btn_signIn">Registrar-se</Link>
+                        <Link to="/signUp" className="btn_signIn">Registrar-se</Link>
                         <br/>
                         <br/>
                         <Link to="/" className="link_forgotPassw">Esqueci a senha</Link>

@@ -25,7 +25,7 @@ const NavBar = () => {
                     <div className="col-lg-3 col-md-3">
                         <div className="navbar_options">
                             <Link className="navbar_link" to="/login">Login</Link>
-                            <Link className="navbar_link" to="/">Registre-se</Link>
+                            <Link className="navbar_link" to="/signUp">Registre-se</Link>
                         </div>
                     </div>
                 </div>

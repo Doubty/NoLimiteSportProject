@@ -6,6 +6,7 @@ import EventPage from './pages/EventPage';
 import AllProducts from './pages/AllProducts';
 import ProductPage from './pages/ProductPage';
 import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 
 const Routes = () => {
     return (
@@ -31,6 +32,9 @@ const Routes = () => {
                 </Route>
                 <Route path="/login">
                     <Login/>
+                </Route>
+                <Route path="/signUp">
+                    <SignUp/>
                 </Route>
             </Switch>
         </BrowserRouter>
