@@ -1,0 +1,72 @@
+.login_section {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: #101622;
+    display: flex;
+    justify-content: center;
+}
+
+.login_section .login_container {
+    position: relative;
+    height: 550px;
+    width: 764px;
+    top: 10%;
+    border-radius: 0px;
+    display: flex;
+}
+
+.login_section .login_container .image, .login_section .login_container .login_form {
+    width: 50%;
+    height: 100%;
+}
+
+.login_section .login_container .login_form {
+    padding: 30px;
+    text-align: center;
+    background: linear-gradient(180deg, #FFFFFF 9.87%, #0258AD 56.49%, rgba(16, 22, 34, 0) 104.09%);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.login_section .login_container .login_form h1 {
+    font-family: "Roboto";
+    font-size: 1.3rem;
+    color: #2b2b2b;
+    margin-top: 60px;
+    margin-bottom: 70px;
+}
+
+.login_section .login_container .login_form form input {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.login_section .login_container .login_form .btn_login {
+    background: #101622;
+    border: 1px solid #2B2B2B;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 8px;
+    color: #fff;
+    padding: 8px 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.login_section .login_container .login_form .btn_signIn{
+    border: 1px solid #FFFFFF;
+    box-sizing: border-box;
+    border-radius: 50px;
+    background: none;
+    color: #fff;
+    padding: 8px 20px;
+    text-decoration: none;
+}
+
+.login_section .login_container .login_form .link_forgotPassw {
+    color: #fff;
+    margin-top: 20px;
+}

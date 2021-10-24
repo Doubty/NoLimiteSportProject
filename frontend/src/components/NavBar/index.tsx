@@ -24,7 +24,7 @@ const NavBar = () => {
                     </div>
                     <div className="col-lg-3 col-md-3">
                         <div className="navbar_options">
-                            <Link className="navbar_link" to="/">Login</Link>
+                            <Link className="navbar_link" to="/login">Login</Link>
                             <Link className="navbar_link" to="/">Registre-se</Link>
                         </div>
                     </div>

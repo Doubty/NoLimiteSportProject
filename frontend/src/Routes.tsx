@@ -5,6 +5,7 @@ import Team from './pages/Team';
 import EventPage from './pages/EventPage';
 import AllProducts from './pages/AllProducts';
 import ProductPage from './pages/ProductPage';
+import Login from './pages/Login';
 
 const Routes = () => {
     return (
@@ -27,6 +28,9 @@ const Routes = () => {
                 </Route>
                 <Route path="/product/:productId">
                     <ProductPage/>
+                </Route>
+                <Route path="/login">
+                    <Login/>
                 </Route>
             </Switch>
         </BrowserRouter>
