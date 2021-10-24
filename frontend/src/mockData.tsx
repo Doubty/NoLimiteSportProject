@@ -1,3 +1,34 @@
+export const mockProducts = [
+    {
+        id: 1,
+        img_url: "product1.jpg",
+        nome: "Pneu de Bicicleta",
+        preco: 89.90,
+        descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+        id: 2,
+        img_url: "product1.jpg",
+        nome: "Aro de Bicicleta",
+        preco: 89.90,
+        descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+        id: 3,
+        img_url: "product1.jpg",
+        nome: "Garrafinha de Água",
+        preco: 89.90,
+        descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    },
+    {
+        id: 4,
+        img_url: "product1.jpg",
+        nome: "Camiseta",
+        preco: 89.90,
+        descricao: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    }
+]
+
 export const mockEvents = [
     {
         id: 1,

@@ -16,7 +16,7 @@ const NavBar = () => {
                     <div className="col-lg-6 col-md-7">
                         <ul className="navbar_links">
                             <li><Link className="navbar_link" to="/">Inicio</Link></li>
-                            <li><Link className="navbar_link" to="/">Produtos</Link></li>
+                            <li><Link className="navbar_link" to="/allProducts">Produtos</Link></li>
                             <li><Link className="navbar_link" to="/allEvents">Eventos</Link></li>
                             <li><Link className="navbar_link" to="/team">Equipe</Link></li>
                             <li><Link className="navbar_link" to="/">Contato</Link></li>
