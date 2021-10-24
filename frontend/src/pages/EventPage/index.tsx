@@ -39,6 +39,10 @@ const EventPage = () => {
         setModalOn(true);
     }
 
+    const closeModal = () => {
+        setModalOn(false);
+    }
+
     return (
         <>
             <NavBar/>
@@ -96,7 +100,7 @@ const EventPage = () => {
                     </div>
                 </div>
             </section>
-            <SubscriptionModal ev={event} isOn={modalOn}/>
+            <SubscriptionModal closeModalFunc={closeModal} ev={event} isOn={modalOn}/>
             <Footer/>
         </>
     );
