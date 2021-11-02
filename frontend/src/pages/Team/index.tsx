@@ -14,7 +14,7 @@ const Team = () => {
         },
         {
             id: 2,
-            name: "Galvão",
+            name: "Galvão Santos",
             description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
             img_url: "galvao.jpeg"
         },

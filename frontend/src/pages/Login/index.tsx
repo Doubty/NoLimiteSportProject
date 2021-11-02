@@ -11,7 +11,7 @@ const Login = () =>  {
                     <div className="image" style={{backgroundImage: "url('img/randomLogin.png')"}}></div>
                     <div className="login_form">
                         <h1>No Limite Sport</h1>
-                        <form action="/">
+                        <form action="/dashboard">
                             <input type="email" className="input_login" name="email" placeholder="E-mail"/>
                             <input type="password" className="input_login" name="passw" placeholder="Senha"/>
                             <button type="submit" className="btn_login">Entrar</button>

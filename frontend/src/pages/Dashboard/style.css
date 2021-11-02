@@ -1,0 +1,42 @@
+.events_section {
+    margin-top: 20px;
+}
+
+.events_section .container .row {
+    margin-bottom: 98px;
+    width: 100%;
+}
+
+.events_section .container .seeMore {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    color: #fff;
+    padding: 10px 30px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #8F17CB;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+}
+
+.motivationalVitrine{
+    margin-top: 80px;
+    height: 925px;
+    background-image: url('../../assets/img/vitrineMotivacional.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+}
+
+.motivationalVitrine_paragr {
+    position: absolute;
+    width: 38%;
+    top: 200px;
+    left: 70px;
+    font-weight: bold;
+    color: white;
+    font-size: 3rem;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.75);
+}

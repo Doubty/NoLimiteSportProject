@@ -7,13 +7,22 @@ import AllProducts from './pages/AllProducts';
 import ProductPage from './pages/ProductPage';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Dashboard from './pages/Dashboard';
+import ManagerEvents from './pages/ManagerEvents';
 
 const Routes = () => {
     return (
         <BrowserRouter>
             <Switch>
+           
                 <Route path="/" exact>
                     <Home/>
+                </Route>
+                <Route path="/Dashboard" >
+                    <Dashboard/>
+                </Route>
+                <Route path="/ManagerEvents" >
+                    <ManagerEvents/>
                 </Route>
                 <Route path="/allEvents">
                     <AllEvents/>
