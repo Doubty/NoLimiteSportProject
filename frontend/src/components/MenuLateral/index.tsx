@@ -101,7 +101,7 @@ const MenuLateral: React.FC = () => {
             icon={<People className={classes.icon} />}
           />
            <ListItemLink
-            to="/dashboard"
+            to="/ManagerStores"
             primary="Gerenciar Lojas Parceiras"
             icon={<Store className={classes.icon} />}
           />

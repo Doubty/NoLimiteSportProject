@@ -102,7 +102,7 @@ const BikeGroups: React.FC = () => {
                   <TextField
                     style={{ marginTop: "1rem", marginBottom: "1rem" }}
                     id="outlined-basic"
-                    label="Pesquisar eventos"
+                    label="Pesquisar Grupos de Pedal"
                     variant="outlined"
                   />
 

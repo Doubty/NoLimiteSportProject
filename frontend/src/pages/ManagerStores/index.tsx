@@ -60,7 +60,7 @@ const style = {
   p: 4,
 };
 
-const ManagerUsers: React.FC = () => {
+const ManagerStores: React.FC = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -97,12 +97,12 @@ const ManagerUsers: React.FC = () => {
             <section className="events_section">
               <div className="container">
                 <div className="row">
-                  <SectionTitle text="Gerenciar Usuários" />
+                  <SectionTitle text="Gerenciar Lojas" />
 
                   <TextField
                     style={{ marginTop: "1rem", marginBottom: "1rem" }}
                     id="outlined-basic"
-                    label="Pesquisar usuários"
+                    label="Pesquisar Lojas"
                     variant="outlined"
                   />
 
@@ -200,4 +200,4 @@ const ManagerUsers: React.FC = () => {
   );
 };
 
-export default ManagerUsers;
+export default ManagerStores;
