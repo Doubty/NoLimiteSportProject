@@ -9,6 +9,8 @@ import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Dashboard from './pages/Dashboard';
 import ManagerEvents from './pages/ManagerEvents';
+import ManagerProducs from './pages/MangerProducts';
+import BikeGroup from './pages/BikeGroups';
 
 const Routes = () => {
     return (
@@ -23,6 +25,10 @@ const Routes = () => {
                 </Route>
                 <Route path="/ManagerEvents" >
                     <ManagerEvents/>
+                </Route>
+                
+                <Route path="/ManagerProducs" >
+                    <ManagerProducs/>
                 </Route>
                 <Route path="/allEvents">
                     <AllEvents/>

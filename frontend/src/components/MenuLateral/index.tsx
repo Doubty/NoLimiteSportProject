@@ -86,7 +86,7 @@ const MenuLateral: React.FC = () => {
             icon={<DirectionsBikeOutlined className={classes.icon} />}
           />
           <ListItemLink
-            to="/profile"
+            to="/ManagerProducs"
             primary="Gerenciar Produtos"
             icon={<CardGiftcard className={classes.icon} />}
           />
