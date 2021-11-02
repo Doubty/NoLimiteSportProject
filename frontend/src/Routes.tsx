@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import ManagerEvents from "./pages/ManagerEvents";
 import ManagerProducs from "./pages/MangerProducts";
 import BikeGroup from "./pages/BikeGroups";
+import ManagerUsers from "./pages/ManagerUsers";
 
 const Routes = () => {
   return (
@@ -24,6 +25,9 @@ const Routes = () => {
         </Route>
         <Route path="/ManagerEvents">
           <ManagerEvents />
+        </Route>
+        <Route path="/ManagerUsers">
+          <ManagerUsers />
         </Route>
         <Route path="/BikeGroup">
           <BikeGroup />

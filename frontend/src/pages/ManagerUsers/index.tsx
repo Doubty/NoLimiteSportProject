@@ -60,7 +60,7 @@ const style = {
   p: 4,
 };
 
-const BikeGroups: React.FC = () => {
+const ManagerUsers: React.FC = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -97,7 +97,7 @@ const BikeGroups: React.FC = () => {
             <section className="events_section">
               <div className="container">
                 <div className="row">
-                  <SectionTitle text="Gerenciar Grupos de Pedal" />
+                  <SectionTitle text="Gerenciar Usuários" />
 
                   <TextField
                     style={{ marginTop: "1rem", marginBottom: "1rem" }}
@@ -200,4 +200,4 @@ const BikeGroups: React.FC = () => {
   );
 };
 
-export default BikeGroups;
+export default ManagerUsers;

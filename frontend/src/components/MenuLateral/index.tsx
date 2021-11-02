@@ -91,13 +91,13 @@ const MenuLateral: React.FC = () => {
             icon={<CardGiftcard className={classes.icon} />}
           />
            <ListItemLink
-            to="/dashboard"
+            to="/BikeGroup"
             primary="Gerenciar Grupos De Pedal"
             icon={<GroupWork className={classes.icon} />}
           />
            <ListItemLink
-            to="/dashboard"
-            primary="Gerencair Usuários"
+            to="/ManagerUsers"
+            primary="Gerenciar Usuários"
             icon={<People className={classes.icon} />}
           />
            <ListItemLink
