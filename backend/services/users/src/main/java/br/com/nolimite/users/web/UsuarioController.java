@@ -18,7 +18,7 @@ import br.com.nolimite.users.repositories.UsuarioRepository;
 import br.com.nolimite.users.services.UsuarioService;
 
 @RestController
-@RequestMapping("api/users")
+@RequestMapping("api/usuarios")
 public class UsuarioController {
 	@Autowired
 	UsuarioRepository userRepo;
