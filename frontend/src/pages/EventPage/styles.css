@@ -1,0 +1,55 @@
+.event_section .event_banner {
+    width: 100%;
+    margin-bottom: 80px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.event_section .title_section {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.event_section .event_description, .event_section .event_infos, .event_section .event_payments {
+    text-align: center;
+    font-size: 1.1rem;
+    margin-bottom: 60px;
+    margin-top: 30px;
+}
+
+.event_section .event_infos_container {
+    margin-top: 120px;
+}
+
+.event_section .event_partners {
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    margin-bottom: 60px;
+}
+
+.subscribe_section {
+    position: relative !important;
+}
+
+.event_section .subscribe_section .subscribe_btn {
+    position: absolute;
+    right: 10px;
+    bottom: 30px;
+    font-weight: bold;
+    color: #fff;
+    padding: 10px 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #088D65;
+    border: none;
+    border-radius: 8px;
+    transition: all ease-in-out .3s;
+}
+
+.event_section .subscribe_section .subscribe_btn:hover {
+    transform: scale(1.1);
+}
+
+.event_section .subscribe_section .subscribe_btn .arrow {
+    color: #fff;
+    margin-left: 10px;
+}

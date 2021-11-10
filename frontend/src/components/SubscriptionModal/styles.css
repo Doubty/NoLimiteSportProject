@@ -1,0 +1,55 @@
+.modal_container {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    justify-content: center;
+    align-items: center;
+    top: 0;
+}
+
+.subscrip_modal {
+    width: 30%;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 8px;
+    padding: 20px;
+    background-color: #fff;
+    height: auto;
+    position: fixed;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+}
+
+.subscrip_modal .subscrip_modal_header {
+    position: relative;
+}
+
+.subscrip_modal .subscrip_modal_header .close_btn {
+    position: absolute;
+    top: 3px;
+    right: 15px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.subscrip_modal .title_section {
+    font-weight: bold;
+    font-size: 1.4rem;
+}
+
+.subscrip_modal .modal_title {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.subscrip_modal .confirm_subscrip_btn {
+    font-weight: bold;
+    color: #fff;
+    padding: 10px 20px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    background-color: #088D65;
+    border: none;
+    border-radius: 8px;
+    margin-top: 30px;
+}
