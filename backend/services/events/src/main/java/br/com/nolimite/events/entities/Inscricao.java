@@ -10,11 +10,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 @Entity
-@Table(name = "tb_registrations")
+@Table(name = "tb_incricoes")
 public class Inscricao {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -23,9 +29,14 @@ public class Inscricao {
 
     // ciclista possui um relacionamento com a tabela de usuário
     private Long ciclista;
-    private boolean estaCondirmada;
+    private boolean estaConfirmada;
     private String tipoPagamento;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dataPagamento;
+
     private String termoUrl;
     private boolean estaCancelada;
 
@@ -56,12 +67,12 @@ public class Inscricao {
         this.ciclista = ciclista;
     }
 
-    public boolean isEstaCondirmada() {
-        return estaCondirmada;
+    public boolean isEstaConfirmada() {
+        return estaConfirmada;
     }
 
-    public void setEstaCondirmada(boolean estaCondirmada) {
-        this.estaCondirmada = estaCondirmada;
+    public void setEstaConfirmada(boolean estaConfirmada) {
+        this.estaConfirmada = estaConfirmada;
     }
 
     public String getTipoPagamento() {
