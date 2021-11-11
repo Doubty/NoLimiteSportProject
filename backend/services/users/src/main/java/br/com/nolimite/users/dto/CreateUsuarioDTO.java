@@ -3,9 +3,12 @@ package br.com.nolimite.users.dto;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import br.com.nolimite.users.entities.Endereco;
+
 public class CreateUsuarioDTO {
 	private String email;
 	private String senha;
+	private Endereco endereco;
 	private Long groupPedal;
     private String nome;
     private String telefoneCelular;
