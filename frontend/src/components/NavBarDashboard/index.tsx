@@ -29,8 +29,10 @@ const NavBarDashboard: React.FC = () => {
       >
         <Toolbar className={classes.toolbar}>
            <NavBarTopDashboard/>
-          <Typography className={classes.userName}>{name}</Typography>
-          <Avatar>{name?.charAt(0)}</Avatar>
+           <div className={classes.userContainer}>
+            <Typography className={classes.userName}>{name}</Typography>
+            <Avatar className={classes.avatar}>{name?.charAt(0)}</Avatar>
+           </div>
         </Toolbar>
       </AppBar>
     </div>

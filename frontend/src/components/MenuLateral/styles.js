@@ -4,15 +4,15 @@ const drawerWidth = 300
 
 export const useStyles = makeStyles(theme => ({
   root: {
-    height: '100vh'
   },
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: 'nowrap',
-    backgroundColor: '#101622'
+    backgroundColor: '#101622',
   },
   drawerOpen: {
+    top: 'auto',
     backgroundColor: '#101622',
     width: drawerWidth,
     transition: theme.transitions.create('width', {
@@ -21,6 +21,7 @@ export const useStyles = makeStyles(theme => ({
     })
   },
   drawerClose: {
+    top: 'auto',
     backgroundColor: '#101622',
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,

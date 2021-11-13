@@ -90,13 +90,13 @@ const MangerEvents: React.FC = () => {
   return (
     <div className={classes.root}>
       <CssBaseline />
-      <MenuLateral />
       <Grid container direction="column">
+        <NavBarDashboard />
         <Grid item>
-          <NavBarDashboard />
+          <MenuLateral />
         </Grid>
         <Grid item>
-          <Container maxWidth="md" className={classes.content}>
+          <Container maxWidth="lg" className={classes.content}>
             <section className="events_section">
               <div className="container">
                 <div className="row">

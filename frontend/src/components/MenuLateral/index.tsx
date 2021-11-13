@@ -4,9 +4,7 @@ import {
   CssBaseline,
   IconButton,
   Drawer,
-  List,
-  Typography,
-  Box
+  List
 } from '@material-ui/core'
 
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
@@ -24,8 +22,6 @@ import ListItemText from '@material-ui/core/ListItemText'
 
 import { useTheme } from '@material-ui/core/styles'
 import { useStyles } from './styles'
-
-import logoImg from '../../assets/img/logo.png'
 import ListItemLink from '../LinkListItem'
 
 import { useHistory } from 'react-router-dom'

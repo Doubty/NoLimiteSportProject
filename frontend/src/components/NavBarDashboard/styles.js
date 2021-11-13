@@ -3,10 +3,12 @@ import { makeStyles } from '@material-ui/core'
 const drawerWidth = 270
 export const useStyles = makeStyles(theme => ({
   root: {
-    flexGrow: 1
+    flexGrow: 1,
+    display: 'flex',
+    justifyContent: 'space-between',
+    width: '100%'
   },
   appBar: {
-    width: 'auto',
     zIndex: theme.zIndex.drawer - 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -30,6 +32,14 @@ export const useStyles = makeStyles(theme => ({
     backgroundColor: '#101622',
   },
   userName: {
-    marginRight: theme.spacing(2)
+    marginRight: theme.spacing(2),
+  },
+  avatar: {
+    marginRight: theme.spacing(10)
+  },
+  userContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 }))
