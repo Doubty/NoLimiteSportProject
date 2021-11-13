@@ -1,11 +1,10 @@
-import { Grid, Container, Typography, CssBaseline } from "@material-ui/core";
+import { Grid, Container, CssBaseline } from "@material-ui/core";
 import React from "react";
 import MenuLateral from "../../components/MenuLateral";
 import NavBarDashboard from "../../components/NavBarDashboard";
 import SectionTitle from "../../components/SectionTitle";
 import { mockEvents } from "../../mockData";
 import InfoCard from "../../components/InfoCard";
-import { Link } from "react-router-dom";
 import "./style.css";
 
 import { useStyles } from "./styles";
@@ -32,7 +31,7 @@ const Dashboard: React.FC = () => {
                       url={"/event/" + event.id}
                       title={event.titulo}
                       description={event.descricao}
-                      img_url={"/event_imgs/" + event.banner_url}
+                      img_url={"/event_imgs/" + event.bannerUrl}
                     />
                   ))}
                 </div>

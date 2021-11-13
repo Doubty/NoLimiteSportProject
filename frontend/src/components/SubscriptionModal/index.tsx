@@ -21,10 +21,10 @@ const SubscriptionModal = ({ ev, isOn, closeModalFunc } : Props) => {
                 <div className="subscrip_modal_body">
                     <h1 className="modal_title">Evento: {ev.titulo}</h1>
                     <p>Local de destino: {ev.destino}</p>
-                    <p>Local de concentração: {ev.local_concentracao}</p>
-                    <p>Data de Saída: {ev.data_saida}</p>
-                    <p>Data de Retorno: {ev.data_retorno}</p>
-                    <p>Informações Comlementares: {ev.info_complementar}</p>
+                    <p>Local de concentração: {ev.localConcentracao}</p>
+                    <p>Data de Saída: {ev.dataSaida}</p>
+                    <p>Data de Retorno: {ev.dataRetorno}</p>
+                    <p>Informações Comlementares: {ev.infoComplementar}</p>
                     <hr />
                 </div>
                 <div className="subscrip_modal_footer">

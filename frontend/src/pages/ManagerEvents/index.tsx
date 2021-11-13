@@ -1,55 +1,36 @@
 import { Grid, Container, Typography, CssBaseline } from "@material-ui/core";
-import React from "react";
+import React, { ChangeEvent, useState } from "react";
 import MenuLateral from "../../components/MenuLateral";
 import NavBarDashboard from "../../components/NavBarDashboard";
 import SectionTitle from "../../components/SectionTitle";
 import { mockEvents } from "../../mockData";
-import InfoCard from "../../components/InfoCard";
-import { Link } from "react-router-dom";
 import "./style.css";
 import { useStyles } from "./styles";
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import TextField from "@material-ui/core/TextField";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Add from "@material-ui/icons/Add";
 import Swal from "sweetalert2";
+import { SportEvent } from "../../types/event";
+import gateway from "../../services/gateway";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
+  { field: "titulo", headerName: "Título", width: 200 },
+  { field: "dataSaida", headerName: "Data de Saída", width: 200 },
+  { field: "dataRetorno", headerName: "Data de Retorno", width: 200 },
+  { field: "destino", headerName: "Destino", width: 130 },
   {
-    field: "age",
-    headerName: "Age",
+    field: "qtdVagas",
+    headerName: "Quantidade de Vagas",
     type: "number",
-    width: 90,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.getValue(params.id, "firstName") || ""} ${
-        params.getValue(params.id, "lastName") || ""
-      }`,
+    width: 230,
   },
 ];
 
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
-];
+const rows = mockEvents;
 
 const style = {
   position: "absolute" as "absolute",
@@ -63,29 +44,58 @@ const style = {
   p: 4,
 };
 
-const MangerEvents: React.FC = () => {
+const ManagerEvents: React.FC = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   function register() {
-
     handleClose();
     Swal.fire({
       title: "Você quer mesmo realizar o cadastro?",
       showDenyButton: true,
       confirmButtonText: "Confirmar",
       denyButtonText: `Cancelar`,
-    }).then((result) => {
+    }).then(async (result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("Operação realizada com sucesso", "", "success");
+        await gateway.post('/eventos', eventSport).then( res => {
+          if (res.status === 201)
+              Swal.fire("Operação realizada com sucesso", "", "success");
+          else
+            Swal.fire("Erro ao cadastrar usuário", "", "info");
+        }).catch ( err => {
+            console.log(err);
+        });
       } else if (result.isDenied) {
         Swal.fire("Operação cancelada com sucesso", "", "info");
       }
     });
   }
+
+  const [eventSport, setEventSport] = useState<SportEvent>({
+    bannerUrl: "",
+    titulo: "",
+    descricao: "",
+    dataSaida: "",
+    dataRetorno: "",
+    localConcentracao: "",
+    destino: "",
+    qtdVagas: 0,
+    ritmo: "",
+    tipoEvento: "",
+    infoComplementar: "",
+    valorInscricao: 0,
+  });
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setEventSport({...eventSport, [event.target.name] : event.target.value});
+  }
+
+  const handleCreateEvent = async () => {
+    
+}
 
   return (
     <div className={classes.root}>
@@ -112,13 +122,12 @@ const MangerEvents: React.FC = () => {
                   <Button
                     className="buttonStyle"
                     style={{
-                      marginLeft: "42.2rem",
                       borderBottom: "none",
                       marginBottom: "1rem",
                     }}
                     onClick={handleOpen}
                   >
-                    Novo Produto <Add style={{ marginLeft: "0.2rem" }} />
+                    Novo Evento <Add style={{ marginLeft: "0.2rem" }} />
                   </Button>
                   <Modal
                     open={open}
@@ -132,7 +141,7 @@ const MangerEvents: React.FC = () => {
                         variant="h6"
                         component="h2"
                       >
-                        Adicionar novo produto
+                        Adicionar novo Evento
                       </Typography>
                       <Typography id="modal-modal-description">
                         Preencha as infomrações abaixo
@@ -142,35 +151,115 @@ const MangerEvents: React.FC = () => {
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label= "Título"
+                        name = "titulo"
                         variant="outlined"
+                        onChange={handleChange}
                       />
                       <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label="Descrição"
+                        name = "descricao"
                         variant="outlined"
+                        onChange={handleChange}
                       />
+
                       <TextField
+                        id="date"
+                        name="dataSaida"
+                        label="Data de Saída"
+                        type="date"
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        onChange={handleChange}
+                      />
+
+                      <TextField
+                        id="date"
+                        name="dataRetorno"
+                        label="Data de Retorno"
+                        type="date"
+                        style={{ marginLeft: "30px" }}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        onChange={handleChange}
+                      />
+
+                       <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label="Local de Concentração"
+                        name="localConcentracao"
                         variant="outlined"
+                        onChange={handleChange}
                       />
-                      <TextField
+                       <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label="Destino"
+                        name="destino"
                         variant="outlined"
+                        onChange={handleChange}
+                      />
+                       <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        type="number"
+                        name="qtdVagas"
+                        label="Quantidade de Vagas"
+                        variant="outlined"
+                        onChange={handleChange}
+                      />
+                       <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        label="Ritmo"
+                        name="ritmo"
+                        variant="outlined"
+                        onChange={handleChange}
+                      />
+                       <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        label="Tipo de Evento"
+                        name="tipoEvento"
+                        variant="outlined"
+                        onChange={handleChange}
+                      />
+                       <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        multiline
+                        label="Informações Complementares"
+                        name="infoComplementar"
+                        variant="outlined"
+                        onChange={handleChange}
+                      />
+                       <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        type="number"
+                        label="Valor da Inscrição"
+                        variant="outlined"
+                        name="valorInscricao"
+                        onChange={handleChange}
                       />
 
                       <Button
-                        onClick={register}
                         style={{ float: "right" }}
                         className="buttonStyle"
+                        onClick={register}
                       >
                         Cadastrar
                       </Button>
@@ -203,4 +292,4 @@ const MangerEvents: React.FC = () => {
   );
 };
 
-export default MangerEvents;
+export default ManagerEvents;

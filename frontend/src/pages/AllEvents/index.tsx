@@ -40,7 +40,7 @@ const AllEvents = () => {
                             </div>
 
                             {events.map((event) =>
-                                <InfoCard url={`/event/${event.id}`} key={event.id} title={event.titulo} description={event.descricao} img_url={"/event_imgs/" + event.banner_url}/>
+                                <InfoCard url={`/event/${event.id}`} key={event.id} title={event.titulo} description={event.descricao} img_url={"/event_imgs/" + event.bannerUrl}/>
                             )}
                     </div>
                 </div>

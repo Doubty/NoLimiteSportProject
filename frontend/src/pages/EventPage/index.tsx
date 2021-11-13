@@ -14,18 +14,18 @@ const EventPage = () => {
     const [modalOn, setModalOn] = useState<boolean>(false);
     const [event, setEvent] = useState<SportEvent>({
         id: 1,
-        banner_url: "",
+        bannerUrl: "",
         titulo: "",
         descricao: "",
-        data_saida: "",
-        data_retorno: "",
-        local_concentracao: "",
+        dataSaida: "",
+        dataRetorno: "",
+        localConcentracao: "",
         destino: "",
-        qtd_vagas: 0,
+        qtdVagas: 0,
         ritmo: "",
-        tipo_evento: "",
-        info_complementar: "",
-        valor_inscricao: 0
+        tipoEvento: "",
+        infoComplementar: "",
+        valorInscricao: 0
     });
     const { eventId } = useParams<{eventId: string}>();
 
@@ -47,7 +47,7 @@ const EventPage = () => {
         <>
             <NavBar/>
             <section className="event_section">
-                <img src={"/img/event_imgs/" + event?.banner_url} alt="Banner do evento" className="event_banner"/>
+                <img src={"/img/event_imgs/" + event?.bannerUrl} alt="Banner do evento" className="event_banner"/>
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">
@@ -59,28 +59,28 @@ const EventPage = () => {
                         <div className="col-md-4">
                             <SectionTitle text="Datas"/>
                             <div className="event_dates">
-                                <p>Saída: {event?.data_saida}</p>
-                                <p>Retorno: {event?.data_retorno}</p>
+                                <p>Saída: {event?.dataSaida}</p>
+                                <p>Retorno: {event?.dataRetorno}</p>
                             </div>
                         </div>
                         <div className="col-md-4">
                             <SectionTitle text="Locais"/>
                             <div className="event_locals">
                                 <p>Destino: {event?.destino}</p>
-                                <p>Local de Concentração: {event?.local_concentracao}</p>
+                                <p>Local de Concentração: {event?.localConcentracao}</p>
                             </div>
                         </div>
                         <div className="col-md-4">
                             <SectionTitle text="Ritmo e Tipo"/>
                             <div className="event_dates">
                                 <p>Ritmo: {event?.ritmo}</p>
-                                <p>Tipo: {event?.tipo_evento}</p>
+                                <p>Tipo: {event?.tipoEvento}</p>
                             </div>
                         </div>
                         <div className="col-md-12 event_infos_container">
                             <SectionTitle text="Informações Complementares"/>
                             <div className="event_infos">
-                                {event?.info_complementar}
+                                {event?.infoComplementar}
                             </div>
                         </div>
                         <div className="col-md-12">
@@ -94,7 +94,7 @@ const EventPage = () => {
                             </div>
                         </div>
                         <div className="col-md-12 subscribe_section">
-                            <SectionTitle text={"Valor da Inscrição: R$ " + event?.valor_inscricao}/>
+                            <SectionTitle text={"Valor da Inscrição: R$ " + event?.valorInscricao}/>
                             <button type="button" className="subscribe_btn" onClick={showModal}>Me inscrever <FontAwesomeIcon className="arrow" icon={faArrowRight} /></button>
                         </div>
                     </div>

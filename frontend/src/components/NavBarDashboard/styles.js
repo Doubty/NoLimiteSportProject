@@ -28,7 +28,9 @@ export const useStyles = makeStyles(theme => ({
   },
   toolbar: {
     display: 'flex',
-    justifyContent: 'flex-end',
+    justifyContent: 'space-between',
+    paddingRight: '10%',
+    paddingLeft: '10%',
     backgroundColor: '#101622',
   },
   userName: {

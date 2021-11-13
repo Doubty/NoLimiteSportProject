@@ -1,16 +1,16 @@
 export type SportEvent = {
-    id: number;
-    banner_url: string;
+    id?: number;
+    bannerUrl: string;
     titulo: string;
     descricao: string;
-    data_saida: string;
-    data_retorno: string;
-    local_concentracao: string;
+    dataSaida: string;
+    dataRetorno: string;
+    localConcentracao: string;
     destino: string;
-    qtd_vagas: number;
+    qtdVagas: number;
     ritmo: string;
-    tipo_evento: string;
-    info_complementar: string;
-    valor_inscricao: number;
+    tipoEvento: string;
+    infoComplementar: string;
+    valorInscricao: number;
     //patrocinadores
 }

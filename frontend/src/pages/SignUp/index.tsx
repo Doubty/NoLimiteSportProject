@@ -46,7 +46,7 @@ const SignUp = () =>  {
         setUser({...user, [event.target.name] : event.target.value});
     }
 
-    const handleLogin = async () => {
+    const register = async () => {
         await gateway.post('/usuarios', user).then( res => {
             if (res.status === 201)
                 // eslint-disable-next-line no-restricted-globals
@@ -130,7 +130,7 @@ const SignUp = () =>  {
                                     type="button" className="btn_next" onClick={handleNextSection} style={{display: section === 2 ? 'none' : 'block'}}>
                                         Próximo <FontAwesomeIcon className="arrowR" icon={faArrowRight} />
                                 </button>
-                                <button type="button" className="btn_login" style={{display: section === 2 ? 'block' : 'none'}} onClick={handleLogin}>Finalizar</button>
+                                <button type="button" className="btn_login" style={{display: section === 2 ? 'block' : 'none'}} onClick={register}>Finalizar</button>
                             </div>    
                         </form>
                     </div>
