@@ -1,27 +1,23 @@
-export type Address = {
-    id: number;
+export type User = {
+    id?: number;
     rua: string;
     numero: string;
     bairro: string;
-    complemento: string;
+    complemento?: string;
     cidade: string;
     estado: string;
     cep: string;
-}
-
-export type User = {
-    id: number;
-    endereco: Address;
     email: string;
     senha: string;
     nome: string;
-    telefone_celular: string;
-    telefone_fixo: string;
-    cpt: string;
+    telefoneCelular: string;
+    telefoneFixo: string;
+    cpf: string;
     sexo: string;
-    data_nascimento: string;
-    plano_saude: string;
-    nivel: 1;
-    tam_camisa: string;
-    //grupo
+    dataNascimento: string;
+    tipoSanquineo: string;
+    planoSaude: string;
+    nivel: 0;
+    temCamisa: string;
+    groupPedal: number;
 }
