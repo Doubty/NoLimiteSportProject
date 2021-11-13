@@ -1,0 +1,16 @@
+server:
+ port: 9000
+
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: userMicroservice
+        uri: https://nls-users.herokuapp.com/
+        predicates:
+        - Path=/api/usuarios/**
+        
+      - id: eventMicroservice
+        uri: https://nls-events.herokuapp.com/
+        predicates:
+        - Path=/api/eventos/**
