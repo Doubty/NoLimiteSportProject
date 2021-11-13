@@ -30,8 +30,7 @@ public class UsuarioService {
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public UsuarioDTO save(CreateUsuarioDTO dto) {
 		Usuario usuario = new Usuario();
-		usuario.setEmail(dto.getEmail());
-		usuario.setSenha(dto.getSenha());
+		usuario = mapper.map(dto, Usuario.class);
 		return mapper.map(repo.save(usuario), UsuarioDTO.class);
 	}
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
