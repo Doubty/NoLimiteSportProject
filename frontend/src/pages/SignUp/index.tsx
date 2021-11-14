@@ -2,6 +2,7 @@ import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useState } from "react";
 import { useHistory } from "react-router";
+import Swal from "sweetalert2";
 import NavBar from "../../components/NavBar";
 import gateway from "../../services/gateway";
 import { User } from "../../types/user";
@@ -52,9 +53,9 @@ const SignUp = () =>  {
     const register = async () => {
         await gateway.post('/usuarios', user).then( res => {
             if (res.status === 201)
-                history.push("Usuário cadastrado!", "/login");
+                history.push("/login", {status: true});
             else
-                alert('Usuário não cadastrado');
+                Swal.fire("O cadastro falhou!", "", "error");
         }).catch ( err => {
             console.log(err);
         });

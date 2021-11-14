@@ -107,7 +107,7 @@ const ManagerEvents: React.FC = () => {
           <MenuLateral />
         </Grid>
         <Grid item>
-          <Container maxWidth="lg" className={classes.content}>
+          <Container maxWidth="md" className={classes.content}>
             <section className="events_section">
               <div className="container">
                 <div className="row">
@@ -130,6 +130,7 @@ const ManagerEvents: React.FC = () => {
                   >
                     Novo Evento <Add style={{ marginLeft: "0.2rem" }} />
                   </Button>
+                  
                   <Modal
                     open={open}
                     onClose={handleClose}

@@ -22,7 +22,7 @@ const Home = () => {
                                 <InfoCard key={event.id} url={"/event/" + event.id} title={event.titulo} description={event.descricao} img_url={"/event_imgs/" + event.bannerUrl}/>
                             )}
                     </div>
-                    <Link to="allEvents" className="seeMore">Ver mais</Link>
+                    <Link to="allEvents" className="seeMoreEvents">Ver mais</Link>
                 </div>
             </section>
 

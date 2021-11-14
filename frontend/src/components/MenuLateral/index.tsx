@@ -25,6 +25,7 @@ import { useStyles } from './styles'
 import ListItemLink from '../LinkListItem'
 
 import { useHistory } from 'react-router-dom'
+import { logout } from '../../services/auth'
 
 const MenuLateral: React.FC = () => {
   const classes = useStyles()
@@ -108,7 +109,7 @@ const MenuLateral: React.FC = () => {
               onClick={handleLogout}
               className={classes.listItem}
             >
-              <ListItemIcon className={classes.white}>
+              <ListItemIcon className={classes.white} onClick={() => {logout(); history.push('/');}}>
                 <ExitToApp className={classes.icon} />
               </ListItemIcon>
 

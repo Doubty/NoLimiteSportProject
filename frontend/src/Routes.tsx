@@ -1,5 +1,5 @@
 import Home from "./pages/Home";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AllEvents from "./pages/AllEvents";
 import Team from "./pages/Team";
 import EventPage from "./pages/EventPage";
@@ -13,6 +13,25 @@ import ManagerProducs from "./pages/MangerProducts";
 import BikeGroup from "./pages/BikeGroups";
 import ManagerUsers from "./pages/ManagerUsers";
 import ManagerStores from "./pages/ManagerStores";
+import { isAuthenticated } from "./services/auth";
+
+interface Props {
+  children: any;
+  path: string;
+}
+
+const PrivateRoute = ({ children, path } : Props) => (
+  <Route
+    path={path}
+    render={props =>
+      isAuthenticated() ? (
+        children
+      ) : (
+        <Redirect to={{ pathname: "/login", state: { from: props.location } }} />
+      )
+    }
+  />
+);
 
 const Routes = () => {
   return (
@@ -20,25 +39,6 @@ const Routes = () => {
       <Switch>
         <Route path="/" exact>
           <Home />
-        </Route>
-        <Route path="/Dashboard">
-          <Dashboard />
-        </Route>
-        <Route path="/ManagerEvents">
-          <ManagerEvents />
-        </Route>
-        <Route path="/ManagerStores">
-          <ManagerStores />
-        </Route>
-        <Route path="/ManagerUsers">
-          <ManagerUsers />
-        </Route>
-        <Route path="/BikeGroup">
-          <BikeGroup />
-        </Route>
-
-        <Route path="/ManagerProducs">
-          <ManagerProducs />
         </Route>
         <Route path="/allEvents">
           <AllEvents />
@@ -56,11 +56,30 @@ const Routes = () => {
           <ProductPage />
         </Route>
         <Route path="/login">
-          <Login />
+          <Login/>
         </Route>
         <Route path="/signUp">
           <SignUp />
         </Route>
+
+        <PrivateRoute path="/Dashboard">
+          <Dashboard />
+        </PrivateRoute>
+        <PrivateRoute path="/ManagerEvents">
+          <ManagerEvents />
+        </PrivateRoute>
+        <PrivateRoute path="/ManagerStores">
+          <ManagerStores />
+        </PrivateRoute>
+        <PrivateRoute path="/ManagerUsers">
+          <ManagerUsers />
+        </PrivateRoute>
+        <PrivateRoute path="/BikeGroup">
+          <BikeGroup />
+        </PrivateRoute>
+        <PrivateRoute path="/ManagerProducs">
+          <ManagerProducs />
+        </PrivateRoute>
       </Switch>
     </BrowserRouter>
   );

@@ -1,18 +1,19 @@
 import axios from 'axios';
-//import { getToken } from "./auth";
+import { getToken } from "./auth";
 
 const api = axios.create({
   baseURL: "https://nls-gateway.herokuapp.com/api",
 });
 
-// api.interceptors.request.use(async config => {
-//   const token = getToken();
+api.interceptors.request.use(async config => {
+  const token = getToken();
 
-//   if (token) {
-//     config.headers.Authorization = `Bearer ${token}`;
-//   }
+  if (token) {
+    if (config.headers)
+      config.headers.Authorization = `Bearer ${token}`;
+  }
 
-//   return config;
-// });
+  return config;
+});
 
 export default api;
