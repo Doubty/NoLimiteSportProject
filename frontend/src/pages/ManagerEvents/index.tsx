@@ -15,6 +15,7 @@ import Add from "@material-ui/icons/Add";
 import Swal from "sweetalert2";
 import { SportEvent } from "../../types/event";
 import gateway from "../../services/gateway";
+import { formatLocalDate } from "../../utils/format";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
@@ -50,30 +51,6 @@ const ManagerEvents: React.FC = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  function register() {
-    handleClose();
-    Swal.fire({
-      title: "Você quer mesmo realizar o cadastro?",
-      showDenyButton: true,
-      confirmButtonText: "Confirmar",
-      denyButtonText: `Cancelar`,
-    }).then(async (result) => {
-      /* Read more about isConfirmed, isDenied below */
-      if (result.isConfirmed) {
-        await gateway.post('/eventos', eventSport).then( res => {
-          if (res.status === 201)
-              Swal.fire("Operação realizada com sucesso", "", "success");
-          else
-            Swal.fire("Erro ao cadastrar usuário", "", "info");
-        }).catch ( err => {
-            console.log(err);
-        });
-      } else if (result.isDenied) {
-        Swal.fire("Operação cancelada com sucesso", "", "info");
-      }
-    });
-  }
-
   const [eventSport, setEventSport] = useState<SportEvent>({
     bannerUrl: "",
     titulo: "",
@@ -93,9 +70,33 @@ const ManagerEvents: React.FC = () => {
     setEventSport({...eventSport, [event.target.name] : event.target.value});
   }
 
-  const handleCreateEvent = async () => {
-    
-}
+  const handleDataInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setEventSport({...eventSport, [event.target.name] : formatLocalDate(event.target.value, "dd/MM/yyyy")});
+  }
+
+  function register() {
+    handleClose();
+    Swal.fire({
+      title: "Você quer mesmo realizar o cadastro?",
+      showDenyButton: true,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        await gateway.post('/eventos', eventSport).then( res => {
+          if (res.status === 200)
+              Swal.fire("Operação realizada com sucesso", "", "success");
+          else
+            Swal.fire("Erro ao cadastrar usuário", "", "info");
+        }).catch ( err => {
+            console.log(err);
+        });
+      } else if (result.isDenied) {
+        Swal.fire("Operação cancelada com sucesso", "", "info");
+      }
+    });
+  }
 
   return (
     <div className={classes.root}>
@@ -174,7 +175,7 @@ const ManagerEvents: React.FC = () => {
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        onChange={handleChange}
+                        onChange={handleDataInputChange}
                       />
 
                       <TextField
@@ -186,7 +187,7 @@ const ManagerEvents: React.FC = () => {
                         InputLabelProps={{
                           shrink: true,
                         }}
-                        onChange={handleChange}
+                        onChange={handleDataInputChange}
                       />
 
                        <TextField

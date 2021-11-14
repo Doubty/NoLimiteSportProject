@@ -1,6 +1,7 @@
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { ChangeEvent, useState } from "react";
+import { useHistory } from "react-router";
 import NavBar from "../../components/NavBar";
 import gateway from "../../services/gateway";
 import { User } from "../../types/user";
@@ -46,11 +47,12 @@ const SignUp = () =>  {
         setUser({...user, [event.target.name] : event.target.value});
     }
 
+    const history = useHistory();
+
     const register = async () => {
         await gateway.post('/usuarios', user).then( res => {
             if (res.status === 201)
-                // eslint-disable-next-line no-restricted-globals
-                history.pushState("Usuário cadastrado!", "", "/login");
+                history.push("Usuário cadastrado!", "/login");
             else
                 alert('Usuário não cadastrado');
         }).catch ( err => {
@@ -91,7 +93,7 @@ const SignUp = () =>  {
 
                                 <label htmlFor="tam_camisa">Tamanho da Camisa: </label>
                                 <select value={user.temCamisa} name="temCamisa" id="tam_camisa" onChange={handleChange}>
-                                    <option value="PP" selected>PP</option>
+                                    <option value="PP">PP</option>
                                     <option value="P">P</option>
                                     <option value="M">M</option>
                                     <option value="G">G</option>
@@ -112,7 +114,7 @@ const SignUp = () =>  {
                                 <br/>
                                 <label htmlFor="sexo">Sexo: </label>
                                 <select value={user.sexo} name="sexo" id="sexo" onChange={handleChange}>
-                                    <option value="M" selected>Masculino</option>
+                                    <option value="M">Masculino</option>
                                     <option value="F">Feminino</option>
                                     <option value="O">Outro</option>
                                 </select>

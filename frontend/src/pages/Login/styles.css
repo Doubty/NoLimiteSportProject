@@ -16,6 +16,11 @@
     display: flex;
 }
 
+.login_section .login_container .login_form form {
+    display: flex;
+    flex-direction: column;
+}
+
 .login_section .login_container .image, .login_section .login_container .login_form {
     width: 50%;
     height: 100%;
