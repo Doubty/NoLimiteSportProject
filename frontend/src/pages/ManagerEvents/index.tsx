@@ -43,6 +43,8 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  maxHeight: 600,
+  overflow: "scroll",
 };
 
 const ManagerEvents: React.FC = () => {
@@ -63,7 +65,7 @@ const ManagerEvents: React.FC = () => {
     ritmo: "",
     tipoEvento: "",
     infoComplementar: "",
-    valorInscricao: 0,
+    valor: 0,
   });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -85,10 +87,10 @@ const ManagerEvents: React.FC = () => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         await gateway.post('/eventos', eventSport).then( res => {
-          if (res.status === 200)
+          if (res.status >= 200 && res.status < 300)
               Swal.fire("Operação realizada com sucesso", "", "success");
           else
-            Swal.fire("Erro ao cadastrar usuário", "", "info");
+            Swal.fire("Erro ao cadastrar evento", "", "info");
         }).catch ( err => {
             console.log(err);
         });
@@ -101,10 +103,10 @@ const ManagerEvents: React.FC = () => {
   return (
     <div className={classes.root}>
       <CssBaseline />
+      <MenuLateral />
       <Grid container direction="column">
-        <NavBarDashboard />
         <Grid item>
-          <MenuLateral />
+          <NavBarDashboard />
         </Grid>
         <Grid item>
           <Container maxWidth="md" className={classes.content}>

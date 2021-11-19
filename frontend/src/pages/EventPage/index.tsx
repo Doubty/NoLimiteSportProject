@@ -25,7 +25,7 @@ const EventPage = () => {
         ritmo: "",
         tipoEvento: "",
         infoComplementar: "",
-        valorInscricao: 0
+        valor: 0
     });
     const { eventId } = useParams<{eventId: string}>();
 
@@ -96,7 +96,7 @@ const EventPage = () => {
                             </div>
                         </div>
                         <div className="col-md-12 subscribe_section">
-                            <SectionTitle text={"Valor da Inscrição: R$ " + event?.valorInscricao}/>
+                            <SectionTitle text={"Valor da Inscrição: R$ " + event?.valor}/>
                             <button type="button" className="subscribe_btn" onClick={showModal}>Me inscrever <FontAwesomeIcon className="arrow" icon={faArrowRight} /></button>
                         </div>
                     </div>

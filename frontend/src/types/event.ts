@@ -11,6 +11,6 @@ export type SportEvent = {
     ritmo: string;
     tipoEvento: string;
     infoComplementar: string;
-    valorInscricao: number;
+    valor: number;
     //patrocinadores
 }

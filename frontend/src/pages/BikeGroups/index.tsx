@@ -1,51 +1,23 @@
 import { Grid, Container, Typography, CssBaseline } from "@material-ui/core";
-import React from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import MenuLateral from "../../components/MenuLateral";
 import NavBarDashboard from "../../components/NavBarDashboard";
 import SectionTitle from "../../components/SectionTitle";
 import "./style.css";
 import { useStyles } from "./styles";     
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import TextField from "@material-ui/core/TextField";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Add from "@material-ui/icons/Add";
 import Swal from "sweetalert2";
+import { getPedalGroups, pedalGroup } from "../../types/pedalGroup";
+import gateway from "../../services/gateway";
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.getValue(params.id, "firstName") || ""} ${
-        params.getValue(params.id, "lastName") || ""
-      }`,
-  },
-];
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+  { field: "id", headerName: "ID", width: 100 },
+  { field: "nome", headerName: "Name", width: 100 },
 ];
 
 const style = {
@@ -66,6 +38,20 @@ const BikeGroups: React.FC = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [group, setGroup] = useState<pedalGroup>({
+    nome: "",
+  });
+
+  const[rows, setRows] = useState<pedalGroup[]>([]);
+
+  useEffect(() => {
+    gateway.get("/grupoPedals").then( res => {
+      console.log(res.data);
+      const getRes : getPedalGroups = res.data;
+      //setRows(getRes._embedded.grupoPedals);
+    });
+  }, []);
+
   function register() {
 
     handleClose();
@@ -74,14 +60,25 @@ const BikeGroups: React.FC = () => {
       showDenyButton: true,
       confirmButtonText: "Confirmar",
       denyButtonText: `Cancelar`,
-    }).then((result) => {
+    }).then(async (result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("Operação realizada com sucesso", "", "success");
+        await gateway.post('/grupoPedals', group).then( res => {
+          if (res.status >= 200 && res.status < 300)
+              Swal.fire("Operação realizada com sucesso", "", "success");
+          else
+            Swal.fire("Erro ao cadastrar grupo", "", "info");
+        }).catch ( err => {
+            console.log(err);
+        });
       } else if (result.isDenied) {
         Swal.fire("Operação cancelada com sucesso", "", "info");
       }
     });
+  }
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setGroup({...group, [event.target.name] : event.target.value});
   }
 
   return (
@@ -109,13 +106,12 @@ const BikeGroups: React.FC = () => {
                   <Button
                     className="buttonStyle"
                     style={{
-                      marginLeft: "42.2rem",
                       borderBottom: "none",
                       marginBottom: "1rem",
                     }}
                     onClick={handleOpen}
                   >
-                    Novo Produto <Add style={{ marginLeft: "0.2rem" }} />
+                    Novo Grupo de Pedal <Add style={{ marginLeft: "0.2rem" }} />
                   </Button>
                   <Modal
                     open={open}
@@ -139,29 +135,10 @@ const BikeGroups: React.FC = () => {
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label="Nome do grupo"
                         variant="outlined"
-                      />
-                      <TextField
-                        fullWidth
-                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
-                        id="outlined-basic"
-                        label="Campo novo"
-                        variant="outlined"
-                      />
-                      <TextField
-                        fullWidth
-                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
-                        id="outlined-basic"
-                        label="Campo novo"
-                        variant="outlined"
-                      />
-                      <TextField
-                        fullWidth
-                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
-                        id="outlined-basic"
-                        label="Campo novo"
-                        variant="outlined"
+                        name="nome"
+                        onChange={handleChange}
                       />
 
                       <Button
