@@ -9,7 +9,7 @@ import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
 import Dashboard from "./pages/Dashboard";
 import ManagerEvents from "./pages/ManagerEvents";
-import ManagerProducs from "./pages/MangerProducts";
+import ManagerProducs from "./pages/ManagerProducts";
 import BikeGroup from "./pages/BikeGroups";
 import ManagerUsers from "./pages/ManagerUsers";
 import ManagerStores from "./pages/ManagerStores";

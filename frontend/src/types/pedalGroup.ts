@@ -1,11 +1,11 @@
-export type pedalGroup = {
+export type PedalGroup = {
     id?: number;
     imgUrl?: string;
     nome: string;
 }
 
-export type getPedalGroups = {
+export type GetPedalGroups = {
     _embedded: {
-      grupoPedals: pedalGroup[];
+      grupoPedals: PedalGroup[];
     }
 }

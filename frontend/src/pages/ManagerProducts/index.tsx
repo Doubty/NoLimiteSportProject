@@ -1,5 +1,5 @@
 import { Grid, Container, Typography, CssBaseline } from "@material-ui/core";
-import React from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import MenuLateral from "../../components/MenuLateral";
 import NavBarDashboard from "../../components/NavBarDashboard";
 import SectionTitle from "../../components/SectionTitle";
@@ -12,40 +12,13 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Add from "@material-ui/icons/Add";
 import Swal from "sweetalert2";
+import { GetProducts, Product } from "../../types/product";
+import gateway from "../../services/gateway";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.getValue(params.id, "firstName") || ""} ${
-        params.getValue(params.id, "lastName") || ""
-      }`,
-  },
-];
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+  { field: "nome", headerName: "Nome do Produto", width: 160 },
+  { field: "preco", headerName: "Preço", width: 130 },
 ];
 
 const style = {
@@ -60,11 +33,27 @@ const style = {
   p: 4,
 };
 
-const MangerProducts: React.FC = () => {
+const ManagerProducts: React.FC = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const [product, setProduct] = useState<Product>({
+    nome: "",
+    descricao: "",
+    preco: 0,
+  });
+
+  const[rows, setRows] = useState<Product[]>([]);
+
+  useEffect(() => {
+    gateway.get("/produtoes").then( res => {
+      console.log(res.data);
+      const getRes : GetProducts = res.data;
+      //setRows(getRes._embedded.grupoPedals);
+    });
+  }, []);
 
   function register() {
 
@@ -74,14 +63,25 @@ const MangerProducts: React.FC = () => {
       showDenyButton: true,
       confirmButtonText: "Confirmar",
       denyButtonText: `Cancelar`,
-    }).then((result) => {
+    }).then(async (result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("Operação realizada com sucesso", "", "success");
+        await gateway.post('/produtoes', product).then( res => {
+          if (res.status >= 200 && res.status < 300)
+              Swal.fire("Operação realizada com sucesso", "", "success");
+          else
+            Swal.fire("Erro ao cadastrar grupo", "", "info");
+        }).catch ( err => {
+            console.log(err);
+        });
       } else if (result.isDenied) {
         Swal.fire("Operação cancelada com sucesso", "", "info");
       }
     });
+  }
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setProduct({...product, [event.target.name] : event.target.value});
   }
 
   return (
@@ -109,7 +109,6 @@ const MangerProducts: React.FC = () => {
                   <Button
                     className="buttonStyle"
                     style={{
-                      marginLeft: "42.2rem",
                       borderBottom: "none",
                       marginBottom: "1rem",
                     }}
@@ -139,29 +138,32 @@ const MangerProducts: React.FC = () => {
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label="Nome do Produto"
+                        name="nome"
                         variant="outlined"
+                        onChange={handleChange}
                       />
+
                       <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        multiline
+                        label="Descrição"
+                        name="descricao"
                         variant="outlined"
+                        onChange={handleChange}
                       />
+
                       <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        type="number"
+                        label="Preço"
                         variant="outlined"
-                      />
-                      <TextField
-                        fullWidth
-                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
-                        id="outlined-basic"
-                        label="Campo novo"
-                        variant="outlined"
+                        name="preco"
+                        onChange={handleChange}
                       />
 
                       <Button
@@ -200,4 +202,4 @@ const MangerProducts: React.FC = () => {
   );
 };
 
-export default MangerProducts;
+export default ManagerProducts;

@@ -12,7 +12,7 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Add from "@material-ui/icons/Add";
 import Swal from "sweetalert2";
-import { getPedalGroups, pedalGroup } from "../../types/pedalGroup";
+import { GetPedalGroups, PedalGroup } from "../../types/pedalGroup";
 import gateway from "../../services/gateway";
 
 const columns: GridColDef[] = [
@@ -38,16 +38,16 @@ const BikeGroups: React.FC = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const [group, setGroup] = useState<pedalGroup>({
+  const [group, setGroup] = useState<PedalGroup>({
     nome: "",
   });
 
-  const[rows, setRows] = useState<pedalGroup[]>([]);
+  const[rows, setRows] = useState<PedalGroup[]>([]);
 
   useEffect(() => {
     gateway.get("/grupoPedals").then( res => {
       console.log(res.data);
-      const getRes : getPedalGroups = res.data;
+      const getRes : GetPedalGroups = res.data;
       //setRows(getRes._embedded.grupoPedals);
     });
   }, []);
@@ -111,7 +111,7 @@ const BikeGroups: React.FC = () => {
                     }}
                     onClick={handleOpen}
                   >
-                    Novo Grupo de Pedal <Add style={{ marginLeft: "0.2rem" }} />
+                    Novo Grupo <Add style={{ marginLeft: "0.2rem" }} />
                   </Button>
                   <Modal
                     open={open}
