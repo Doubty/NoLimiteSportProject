@@ -5,15 +5,15 @@ import { useParams } from "react-router";
 import Footer from "../../components/Footer";
 import NavBar from "../../components/NavBar";
 import SectionTitle from "../../components/SectionTitle";
-import { mockEvents } from "../../mockData";
 import { SportEvent } from "../../types/event";
 import "./styles.css";
 import SubscriptionModal from "../../components/SubscriptionModal";
+import gateway from "../../services/gateway";
 
 const EventPage = () => {
     const [modalOn, setModalOn] = useState<boolean>(false);
     const [event, setEvent] = useState<SportEvent>({
-        id: 1,
+        id: -1,
         bannerUrl: "",
         titulo: "",
         descricao: "",
@@ -30,9 +30,11 @@ const EventPage = () => {
     const { eventId } = useParams<{eventId: string}>();
 
     useEffect(() => {
-        const theEvent = mockEvents.find(element => element.id === parseInt(eventId));
-        if (theEvent !== undefined)
-            setEvent(theEvent);
+        gateway.get("/eventos/search/byId?id="+eventId).then(res => {
+            const theEvent = res.data;
+            if (theEvent !== undefined)
+                setEvent(theEvent);
+        });
     }, [eventId]);
 
     const showModal = () => {
@@ -47,7 +49,7 @@ const EventPage = () => {
         <>
             <NavBar/>
             <section className="event_section">
-                <img src={"/img/event_imgs/" + event?.bannerUrl} alt="Banner do evento" className="event_banner"/>
+                <img src={"/img/event_imgs/event1.png"} alt="Banner do evento" className="event_banner"/>
                 <div className="container">
                     <div className="row">
                         <div className="col-md-12">

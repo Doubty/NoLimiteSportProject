@@ -3,26 +3,36 @@ import Footer from "../../components/Footer";
 import InstagramSection from "../../components/InstagramSection";
 import NavBar from "../../components/NavBar";
 import SectionTitle from "../../components/SectionTitle";
-import { mockEvents } from "../../mockData";
 import "./styles.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SportEvent } from "../../types/event";
+import gateway from "../../services/gateway";
 
 const AllEvents = () => {
-    const [events, setEvents] = useState<SportEvent[]>(mockEvents);
+    const [events, setEvents] = useState<SportEvent[]>();
+
+    useEffect(() => {
+        gateway.get("/eventos").then(res => {
+            setEvents(res.data);
+        });
+    }, []);
 
     const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
         const value = e.currentTarget.value;
         
         if (value === "") {
-            setEvents(mockEvents);
+            gateway.get("/eventos").then(res => {
+                setEvents(res.data);
+            });
             return;
         }
 
-        const searchedValues = events.filter(event => event.titulo.includes(value));
-        setEvents(searchedValues);
+        if (events !== undefined) {
+            const searchedValues = events.filter(event => event.titulo.includes(value));
+            setEvents(searchedValues);
+        }
     }
 
     return (
@@ -39,9 +49,13 @@ const AllEvents = () => {
                                 <FontAwesomeIcon className="icon-search" icon={ faSearch } />
                             </div>
 
-                            {events.map((event) =>
-                                <InfoCard url={`/event/${event.id}`} key={event.id} title={event.titulo} description={event.descricao} img_url={"/event_imgs/" + event.bannerUrl}/>
-                            )}
+                            {
+                                (events !== undefined) ? 
+                                events.map((event) =>
+                                    <InfoCard key={event.id} url={"/event/" + event.id} title={event.titulo} description={event.descricao} img_url={"/event_imgs/event1.png"}/>
+                                ) :
+                                <p>Não há eventos</p>
+                            }
                     </div>
                 </div>
             </section>
