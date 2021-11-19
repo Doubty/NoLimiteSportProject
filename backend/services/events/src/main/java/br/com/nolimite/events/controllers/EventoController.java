@@ -1,8 +1,10 @@
 package br.com.nolimite.events.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +24,7 @@ import br.com.nolimite.events.services.EventoService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/eventos")
+@RequestMapping("/api/eventos")
 public class EventoController {
     @Autowired
     EventoRepository eventoRepo;
@@ -33,6 +35,11 @@ public class EventoController {
     public List<Evento> getEventos() {
         return eventoRepo.findAll();
     }
+    
+    @GetMapping("/search/byId")
+	public Optional<Evento> getByEmail(@Param("id") Long id) {
+		return eventoService.findById(id);
+	}
 
     @PostMapping
     public ResponseEntity<Evento> postEvento(@RequestBody Evento evento) {
@@ -57,10 +64,9 @@ public class EventoController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteEvento(@PathVariable Long id) {
-        Evento event = eventoRepo.getById(id);
         try {
             eventoRepo.deleteById(id);
-            return new ResponseEntity<>(event.getTitulo(), HttpStatus.OK);
+            return new ResponseEntity<>("Deletado com Sucesso", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("", HttpStatus.NOT_FOUND);
         }

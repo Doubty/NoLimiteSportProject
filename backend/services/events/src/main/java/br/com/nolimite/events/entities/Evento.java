@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,7 +25,7 @@ public class Evento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "evento")
+    @OneToMany(mappedBy = "evento", fetch = FetchType.EAGER)
     private List<Inscricao> inscricaoList = new ArrayList<Inscricao>();
 
     private String bannerUrl;
@@ -48,6 +49,8 @@ public class Evento {
     private String tipoEvento;
     private String infoComplementar;
     private String temCamisa;
+    
+    private Double valor;
 
     public Evento() {
     }
@@ -163,4 +166,13 @@ public class Evento {
     public void setTemCamisa(String temCamisa) {
         this.temCamisa = temCamisa;
     }
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+    
 }

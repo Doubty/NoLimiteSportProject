@@ -9,12 +9,14 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.nolimite.users.dto.CreateUsuarioDTO;
 import br.com.nolimite.users.dto.UsuarioDTO;
 import br.com.nolimite.users.repositories.UsuarioRepository;
+import br.com.nolimite.users.services.AuthenticationService;
 import br.com.nolimite.users.services.UsuarioService;
 
 @RestController
@@ -24,10 +26,20 @@ public class UsuarioController {
 	UsuarioRepository userRepo;
 	@Autowired
 	UsuarioService service;
+	@Autowired
+	AuthenticationService authService;
+	
+	
 	@GetMapping("/search/byEmail")
 	public UsuarioDTO getByEmail(@Param("email") String email) {
 		return service.findByEmail(email);
 	}
+	
+	@GetMapping("/search/byToken")
+	public UsuarioDTO getByToken(@RequestHeader("Authorization") String token) {
+		return authService.getUserByToken(token);
+	}
+	
 	@PostMapping
 	public ResponseEntity<UsuarioDTO> save (@RequestBody CreateUsuarioDTO dto) {
 		

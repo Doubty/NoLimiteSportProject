@@ -20,7 +20,7 @@ import br.com.nolimite.events.services.InscricaoService;
 
 @RestController
 @CrossOrigin
-@RequestMapping("/inscricoes")
+@RequestMapping("/api/eventos/inscricoes")
 public class InscricaoController {
     @Autowired
     InscricaoRepository inscricaoRepo;

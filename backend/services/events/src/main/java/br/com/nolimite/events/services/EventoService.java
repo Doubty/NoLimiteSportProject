@@ -1,5 +1,7 @@
 package br.com.nolimite.events.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,14 @@ public class EventoService {
         event.setTipoEvento(evento.getTipoEvento());
         event.setInfoComplementar(evento.getInfoComplementar());
         event.setTemCamisa(evento.getTemCamisa());
+        event.setValor(evento.getValor());
 
         final Evento updatedEvent = eventoRepo.save(event);
         return updatedEvent;
     }
+    
+    public Optional<Evento> findById(Long id) {
+		Optional<Evento> evento = eventoRepo.findById(id);
+		return evento;
+	}
 }
