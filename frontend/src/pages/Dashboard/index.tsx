@@ -20,11 +20,11 @@ const Dashboard: React.FC = () => {
           <NavBarDashboard />
         </Grid>
         <Grid item>
-          <Container maxWidth="md" className={classes.content}>
+          <Container maxWidth="lg" className={classes.content}>
             <section className="events_section">
               <div className="container">
                 <div className="row">
-                  <SectionTitle text="Meu Perfil" />
+                  <SectionTitle text="Minhas inscrições" />
 
                   {mockEvents.slice(0, 6).map((event) => (
                     <InfoCard

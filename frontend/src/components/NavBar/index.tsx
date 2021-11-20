@@ -1,8 +1,27 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/img/logo.png";
+import gateway from "../../services/gateway";
 import "./styles.css";
 
+interface User {
+    id: number;
+    nome: string;
+}
+
 const NavBar = () => {
+    const [name, setName] = useState<string>("");
+
+    useEffect(() => {
+        let user : User;
+
+        gateway.get("/usuarios/search/byToken").then( res => {
+        user = res.data;
+        console.log(user.nome);
+        setName(user.nome);
+        });
+    }, []);
+
     return (
         <>
         <div className="navbar">
@@ -24,8 +43,15 @@ const NavBar = () => {
                     </div>
                     <div className="col-lg-3 col-md-3">
                         <div className="navbar_options">
-                            <Link className="navbar_link" to="/login">Login</Link>
-                            <Link className="navbar_link" to="/signUp">Registre-se</Link>
+                            {
+                                (name !== "") ? 
+                                    <Link className="navbar_link" to="/dashboard">{name}</Link>
+                                :
+                                    <>
+                                        <Link className="navbar_link" to="/login">Login</Link>
+                                        <Link className="navbar_link" to="/signUp">Registre-se</Link>
+                                    </>
+                            }
                         </div>
                     </div>
                 </div>

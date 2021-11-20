@@ -14,21 +14,42 @@ import BikeGroup from "./pages/BikeGroups";
 import ManagerUsers from "./pages/ManagerUsers";
 import ManagerStores from "./pages/ManagerStores";
 import { isAuthenticated } from "./services/auth";
+import gateway from "./services/gateway";
 
 interface Props {
   children: any;
   path: string;
+  isDashboard: boolean;
 }
 
-const PrivateRoute = ({ children, path } : Props) => (
+interface User {
+  id: number;
+  nivel: number;
+}
+
+const PrivateRoute = ({ children, path, isDashboard } : Props) => (
   <Route
     path={path}
-    render={props =>
-      isAuthenticated() ? (
-        children
-      ) : (
-        <Redirect to={{ pathname: "/login", state: { from: props.location } }} />
-      )
+    render={props => {
+      if (isAuthenticated()) {
+        if (isDashboard)
+          return (children);
+
+        let user : User;
+        gateway.get("/usuarios/search/byToken").then( res => {
+          user = res.data;
+
+          if (user)
+            if (user.nivel === 1)
+              return (children);
+        }).catch( () => {
+          return <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }} />;
+        });
+
+        return <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }} />;
+      } else 
+        return <Redirect to={{ pathname: "/login", state: { from: props.location } }} />;
+    }
     }
   />
 );
@@ -62,22 +83,22 @@ const Routes = () => {
           <SignUp />
         </Route>
 
-        <PrivateRoute path="/Dashboard">
+        <PrivateRoute isDashboard={true} path="/Dashboard">
           <Dashboard />
         </PrivateRoute>
-        <PrivateRoute path="/ManagerEvents">
+        <PrivateRoute isDashboard={false} path="/ManagerEvents">
           <ManagerEvents />
         </PrivateRoute>
-        <PrivateRoute path="/ManagerStores">
+        <PrivateRoute isDashboard={false} path="/ManagerStores">
           <ManagerStores />
         </PrivateRoute>
-        <PrivateRoute path="/ManagerUsers">
+        <PrivateRoute isDashboard={false} path="/ManagerUsers">
           <ManagerUsers />
         </PrivateRoute>
-        <PrivateRoute path="/BikeGroup">
+        <PrivateRoute isDashboard={false} path="/BikeGroup">
           <BikeGroup />
         </PrivateRoute>
-        <PrivateRoute path="/ManagerProducs">
+        <PrivateRoute isDashboard={false} path="/ManagerProducs">
           <ManagerProducs />
         </PrivateRoute>
       </Switch>

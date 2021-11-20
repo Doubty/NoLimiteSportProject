@@ -17,7 +17,7 @@ export type User = {
     dataNascimento: string;
     tipoSanquineo: string;
     planoSaude: string;
-    nivel: 0;
+    nivel: number;
     temCamisa: string;
     groupPedal: number;
 }

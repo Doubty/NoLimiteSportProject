@@ -4,10 +4,11 @@ import { AppBar, Toolbar, Typography, Avatar } from "@material-ui/core";
 import NavBarTopDashboard from "../NavBarTopDashboard";
 
 import { useStyles } from "./styles";
+import gateway from "../../services/gateway";
 
 interface User {
   id: number;
-  name: string;
+  nome: string;
 }
 
 const NavBarDashboard: React.FC = () => {
@@ -15,8 +16,13 @@ const NavBarDashboard: React.FC = () => {
   const [name, setName] = useState<string>("");
 
   useEffect(() => {
-    //const user: User = JSON.parse(localStorage.getItem('user') as string)
-    setName("Galvão teste");
+    let user : User;
+
+    gateway.get("/usuarios/search/byToken").then( res => {
+      user = res.data;
+      console.log(user.nome);
+      setName(user.nome);
+    });
   }, []);
 
   return (

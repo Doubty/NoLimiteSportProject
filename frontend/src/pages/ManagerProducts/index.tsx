@@ -5,7 +5,7 @@ import NavBarDashboard from "../../components/NavBarDashboard";
 import SectionTitle from "../../components/SectionTitle";
 import "./style.css";
 import { useStyles } from "./styles";     
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import TextField from "@material-ui/core/TextField";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";

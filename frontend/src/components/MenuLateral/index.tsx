@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import clsx from 'clsx'
 import {
   CssBaseline,
@@ -26,6 +26,12 @@ import ListItemLink from '../LinkListItem'
 
 import { useHistory } from 'react-router-dom'
 import { logout } from '../../services/auth'
+import gateway from '../../services/gateway'
+
+interface User {
+  id: number;
+  nivel: number;
+}
 
 const MenuLateral: React.FC = () => {
   const classes = useStyles()
@@ -39,10 +45,22 @@ const MenuLateral: React.FC = () => {
     setOpen(!open)
   }
 
-  const handleLogout = () => {
-    localStorage.clear()
-    history.push('/')
-  }
+  const [isAdm, setIsAdm] = useState<boolean>(false);
+
+  useEffect(() => {
+    let user : User;
+
+    gateway.get("/usuarios/search/byToken").then( res => {
+      user = res.data;
+
+      if (user.nivel === 1)
+        setIsAdm(true);
+      else
+        setIsAdm(false);
+    }).catch( () => {
+      setIsAdm(false);
+    });
+  }, []);
 
   return (
     <div className={classes.root}>
@@ -77,39 +95,47 @@ const MenuLateral: React.FC = () => {
             primary="Meu Perfil"
             icon={<PersonOutlineIcon className={classes.icon} />}
           />
-          <ListItemLink
-            to="/ManagerEvents"
-            primary="Gerenciar Eventos"
-            icon={<DirectionsBikeOutlined className={classes.icon} />}
-          />
-          <ListItemLink
-            to="/ManagerProducs"
-            primary="Gerenciar Produtos"
-            icon={<CardGiftcard className={classes.icon} />}
-          />
-           <ListItemLink
-            to="/BikeGroup"
-            primary="Gerenciar Grupos De Pedal"
-            icon={<GroupWork className={classes.icon} />}
-          />
-           <ListItemLink
-            to="/ManagerUsers"
-            primary="Gerenciar Usuários"
-            icon={<People className={classes.icon} />}
-          />
-           <ListItemLink
-            to="/ManagerStores"
-            primary="Gerenciar Lojas Parceiras"
-            icon={<Store className={classes.icon} />}
-          />
+
+          {isAdm ?
+            <>
+              <ListItemLink
+                to="/ManagerEvents"
+                primary="Gerenciar Eventos"
+                icon={<DirectionsBikeOutlined className={classes.icon} />}
+              />
+              <ListItemLink
+                to="/ManagerProducs"
+                primary="Gerenciar Produtos"
+                icon={<CardGiftcard className={classes.icon} />}
+              />
+              <ListItemLink
+                to="/BikeGroup"
+                primary="Gerenciar Grupos De Pedal"
+                icon={<GroupWork className={classes.icon} />}
+              />
+              <ListItemLink
+                to="/ManagerUsers"
+                primary="Gerenciar Usuários"
+                icon={<People className={classes.icon} />}
+              />
+              <ListItemLink
+                to="/ManagerStores"
+                primary="Gerenciar Lojas Parceiras"
+                icon={<Store className={classes.icon} />}
+              />
+            </>
+          :
+            ""
+          }
+
           <li>
             <ListItem
               button
               key={'Sair'}
-              onClick={handleLogout}
+              onClick={() => {logout(); history.push('/');}}
               className={classes.listItem}
             >
-              <ListItemIcon className={classes.white} onClick={() => {logout(); history.push('/');}}>
+              <ListItemIcon className={classes.white}>
                 <ExitToApp className={classes.icon} />
               </ListItemIcon>
 
