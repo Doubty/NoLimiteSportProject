@@ -15,11 +15,11 @@ import ManagerUsers from "./pages/ManagerUsers";
 import ManagerStores from "./pages/ManagerStores";
 import { isAuthenticated } from "./services/auth";
 import gateway from "./services/gateway";
+import { useEffect, useState } from "react";
 
 interface Props {
   children: any;
   path: string;
-  isDashboard: boolean;
 }
 
 interface User {
@@ -27,34 +27,36 @@ interface User {
   nivel: number;
 }
 
-const PrivateRoute = ({ children, path, isDashboard } : Props) => (
+const PrivateRoute = ({ children, path } : Props) => (
   <Route
     path={path}
-    render={props => {
-      if (isAuthenticated()) {
-        if (isDashboard)
-          return (children);
-
-        let user : User;
-        gateway.get("/usuarios/search/byToken").then( res => {
-          user = res.data;
-
-          if (user)
-            if (user.nivel === 1)
-              return (children);
-        }).catch( () => {
-          return <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }} />;
-        });
-
-        return <Redirect to={{ pathname: "/dashboard", state: { from: props.location } }} />;
-      } else 
-        return <Redirect to={{ pathname: "/login", state: { from: props.location } }} />;
-    }
-    }
+    render={props =>
+      isAuthenticated() ? (
+        children
+      ) : (
+        <Redirect to={{ pathname: "/login", state: { from: props.location } }} />
+      )}
   />
 );
 
 const Routes = () => {
+  const [isAdm, setIsAdm] = useState<boolean>(false);
+
+  useEffect(() => {
+    let user : User;
+
+    gateway.get("/usuarios/search/byToken").then( res => {
+      user = res.data;
+
+      if (user.nivel === 1)
+        setIsAdm(true);
+      else
+        setIsAdm(false);
+    }).catch( () => {
+      setIsAdm(false);
+    });
+  }, []);
+
   return (
     <BrowserRouter>
       <Switch>
@@ -83,24 +85,32 @@ const Routes = () => {
           <SignUp />
         </Route>
 
-        <PrivateRoute isDashboard={true} path="/Dashboard">
+        <PrivateRoute path="/Dashboard">
           <Dashboard />
         </PrivateRoute>
-        <PrivateRoute isDashboard={false} path="/ManagerEvents">
-          <ManagerEvents />
-        </PrivateRoute>
-        <PrivateRoute isDashboard={false} path="/ManagerStores">
-          <ManagerStores />
-        </PrivateRoute>
-        <PrivateRoute isDashboard={false} path="/ManagerUsers">
-          <ManagerUsers />
-        </PrivateRoute>
-        <PrivateRoute isDashboard={false} path="/BikeGroup">
-          <BikeGroup />
-        </PrivateRoute>
-        <PrivateRoute isDashboard={false} path="/ManagerProducs">
-          <ManagerProducs />
-        </PrivateRoute>
+
+        {
+          isAdm ? 
+          <>
+            <PrivateRoute path="/ManagerEvents">
+              <ManagerEvents />
+            </PrivateRoute>
+            <PrivateRoute path="/ManagerStores">
+              <ManagerStores />
+            </PrivateRoute>
+            <PrivateRoute path="/ManagerUsers">
+              <ManagerUsers />
+            </PrivateRoute>
+            <PrivateRoute path="/BikeGroup">
+              <BikeGroup />
+            </PrivateRoute>
+            <PrivateRoute path="/ManagerProducs">
+              <ManagerProducs />
+            </PrivateRoute>
+          </>
+          :
+          ""
+        }
       </Switch>
     </BrowserRouter>
   );

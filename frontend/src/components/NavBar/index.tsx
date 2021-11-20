@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/img/logo.png";
+import { isAuthenticated } from "../../services/auth";
 import gateway from "../../services/gateway";
 import "./styles.css";
 
@@ -13,13 +14,13 @@ const NavBar = () => {
     const [name, setName] = useState<string>("");
 
     useEffect(() => {
-        let user : User;
-
-        gateway.get("/usuarios/search/byToken").then( res => {
-        user = res.data;
-        console.log(user.nome);
-        setName(user.nome);
-        });
+        if (isAuthenticated()) {
+            let user : User;
+            gateway.get("/usuarios/search/byToken").then( res => {
+            user = res.data;
+            setName(user.nome);
+            });
+        }
     }, []);
 
     return (

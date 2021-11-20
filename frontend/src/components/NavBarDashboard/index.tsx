@@ -17,7 +17,6 @@ const NavBarDashboard: React.FC = () => {
 
   useEffect(() => {
     let user : User;
-
     gateway.get("/usuarios/search/byToken").then( res => {
       user = res.data;
       console.log(user.nome);

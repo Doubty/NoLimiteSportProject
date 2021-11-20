@@ -13,8 +13,10 @@ interface state {
 const Login = () =>  {
     const location = useLocation<state>();
 
-    if(location.state?.status)
+    if(location.state?.status) {
         Swal.fire("O usuário foi cadastrado", "", "success");
+        location.state.status = false;
+    }
 
     const [user, setUser] = useState({
         email: "",
