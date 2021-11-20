@@ -8,6 +8,6 @@ export type Product = {
 
 export type GetProducts = {
     _embedded: {
-      grupoPedals: Product[];
+      products: Product[];
     }
 }

@@ -12,13 +12,13 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Add from "@material-ui/icons/Add";
 import Swal from "sweetalert2";
-import { GetProducts, Product } from "../../types/product";
+import { Product } from "../../types/product";
 import gateway from "../../services/gateway";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
-  { field: "nome", headerName: "Nome do Produto", width: 160 },
-  { field: "preco", headerName: "Preço", width: 130 },
+  { field: "nome", headerName: "Nome do Produto", width: 200 },
+  { field: "preco", headerName: "Preço", width: 200 },
 ];
 
 const style = {
@@ -48,10 +48,9 @@ const ManagerProducts: React.FC = () => {
   const[rows, setRows] = useState<Product[]>([]);
 
   useEffect(() => {
-    gateway.get("/produtoes").then( res => {
-      console.log(res.data);
-      const getRes : GetProducts = res.data;
-      //setRows(getRes._embedded.grupoPedals);
+    gateway.get("/produtoes/todos").then( res => {
+      const getRes : Product [] = res.data;
+      setRows(getRes);
     });
   }, []);
 

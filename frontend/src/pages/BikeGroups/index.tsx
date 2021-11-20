@@ -12,12 +12,12 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Add from "@material-ui/icons/Add";
 import Swal from "sweetalert2";
-import { GetPedalGroups, PedalGroup } from "../../types/pedalGroup";
+import { PedalGroup } from "../../types/pedalGroup";
 import gateway from "../../services/gateway";
 
 const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 100 },
-  { field: "nome", headerName: "Name", width: 100 },
+  { field: "id", headerName: "ID", width: 200 },
+  { field: "nome", headerName: "Name", width: 200 },
 ];
 
 const style = {
@@ -45,10 +45,10 @@ const BikeGroups: React.FC = () => {
   const[rows, setRows] = useState<PedalGroup[]>([]);
 
   useEffect(() => {
-    gateway.get("/grupoPedals").then( res => {
+    gateway.get("/grupoPedals/todos").then( res => {
       console.log(res.data);
-      const getRes : GetPedalGroups = res.data;
-      //setRows(getRes._embedded.grupoPedals);
+      const getRes : PedalGroup[] = res.data;
+      setRows(getRes);
     });
   }, []);
 
