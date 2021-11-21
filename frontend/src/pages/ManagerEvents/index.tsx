@@ -1,5 +1,5 @@
 import { Grid, Container, Typography, CssBaseline } from "@material-ui/core";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useState, useEffect } from "react";
 import MenuLateral from "../../components/MenuLateral";
 import NavBarDashboard from "../../components/NavBarDashboard";
 import SectionTitle from "../../components/SectionTitle";
@@ -16,6 +16,7 @@ import Swal from "sweetalert2";
 import { SportEvent } from "../../types/event";
 import gateway from "../../services/gateway";
 import { formatLocalDate } from "../../utils/format";
+import { getListEvents } from "../../services/gateway";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
@@ -53,6 +54,10 @@ const ManagerEvents: React.FC = () => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
+  const [listEvents, setListEvents] = useState([]);
+  const [rowEvents, setRowEvents] = useState(rows);
+  const [inputSearch, setInputSearch] = useState("");
+
   const [eventSport, setEventSport] = useState<SportEvent>({
     bannerUrl: "",
     titulo: "",
@@ -68,13 +73,31 @@ const ManagerEvents: React.FC = () => {
     valor: 0,
   });
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setEventSport({...eventSport, [event.target.name] : event.target.value});
-  }
+  const handleChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setEventSport({ ...eventSport, [event.target.name]: event.target.value });
+  };
 
-  const handleDataInputChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setEventSport({...eventSport, [event.target.name] : formatLocalDate(event.target.value, "dd/MM/yyyy")});
-  }
+  const handleDataInputChange = (
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setEventSport({
+      ...eventSport,
+      [event.target.name]: formatLocalDate(event.target.value, "dd/MM/yyyy"),
+    });
+  };
+
+  useEffect(() => {
+    getListEvents().then((res) => {
+      setListEvents(res.data);
+      setRowEvents(res.data);
+    });
+
+    console.log(listEvents);
+  }, []);
+
+ 
 
   function register() {
     handleClose();
@@ -86,14 +109,16 @@ const ManagerEvents: React.FC = () => {
     }).then(async (result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        await gateway.post('/eventos', eventSport).then( res => {
-          if (res.status >= 200 && res.status < 300)
+        await gateway
+          .post("/eventos", eventSport)
+          .then((res) => {
+            if (res.status >= 200 && res.status < 300)
               Swal.fire("Operação realizada com sucesso", "", "success");
-          else
-            Swal.fire("Erro ao cadastrar evento", "", "info");
-        }).catch ( err => {
+            else Swal.fire("Erro ao cadastrar evento", "", "info");
+          })
+          .catch((err) => {
             console.log(err);
-        });
+          });
       } else if (result.isDenied) {
         Swal.fire("Operação cancelada com sucesso", "", "info");
       }
@@ -116,6 +141,7 @@ const ManagerEvents: React.FC = () => {
                   <SectionTitle text="Gerenciar Eventos" />
 
                   <TextField
+                   
                     style={{ marginTop: "1rem", marginBottom: "1rem" }}
                     id="outlined-basic"
                     label="Pesquisar eventos"
@@ -132,7 +158,7 @@ const ManagerEvents: React.FC = () => {
                   >
                     Novo Evento <Add style={{ marginLeft: "0.2rem" }} />
                   </Button>
-                  
+
                   <Modal
                     open={open}
                     onClose={handleClose}
@@ -155,8 +181,8 @@ const ManagerEvents: React.FC = () => {
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label= "Título"
-                        name = "titulo"
+                        label="Título"
+                        name="titulo"
                         variant="outlined"
                         onChange={handleChange}
                       />
@@ -165,7 +191,7 @@ const ManagerEvents: React.FC = () => {
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
                         label="Descrição"
-                        name = "descricao"
+                        name="descricao"
                         variant="outlined"
                         onChange={handleChange}
                       />
@@ -193,7 +219,7 @@ const ManagerEvents: React.FC = () => {
                         onChange={handleDataInputChange}
                       />
 
-                       <TextField
+                      <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
@@ -202,7 +228,7 @@ const ManagerEvents: React.FC = () => {
                         variant="outlined"
                         onChange={handleChange}
                       />
-                       <TextField
+                      <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
@@ -211,7 +237,7 @@ const ManagerEvents: React.FC = () => {
                         variant="outlined"
                         onChange={handleChange}
                       />
-                       <TextField
+                      <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
@@ -221,7 +247,7 @@ const ManagerEvents: React.FC = () => {
                         variant="outlined"
                         onChange={handleChange}
                       />
-                       <TextField
+                      <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
@@ -230,7 +256,7 @@ const ManagerEvents: React.FC = () => {
                         variant="outlined"
                         onChange={handleChange}
                       />
-                       <TextField
+                      <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
@@ -239,7 +265,7 @@ const ManagerEvents: React.FC = () => {
                         variant="outlined"
                         onChange={handleChange}
                       />
-                       <TextField
+                      <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
@@ -249,7 +275,7 @@ const ManagerEvents: React.FC = () => {
                         variant="outlined"
                         onChange={handleChange}
                       />
-                       <TextField
+                      <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
@@ -279,7 +305,7 @@ const ManagerEvents: React.FC = () => {
 
                   <div style={{ height: 400, width: "100%" }}>
                     <DataGrid
-                      rows={rows}
+                      rows={rowEvents}
                       columns={columns}
                       pageSize={5}
                       rowsPerPageOptions={[5]}
