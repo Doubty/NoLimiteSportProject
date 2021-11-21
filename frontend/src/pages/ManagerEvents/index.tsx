@@ -97,7 +97,19 @@ const ManagerEvents: React.FC = () => {
     console.log(listEvents);
   }, []);
 
- 
+  function searchEvent() {
+    if (inputSearch === "" || inputSearch === " ") {
+      getListEvents().then((res) => setListEvents(res.data));
+      setRowEvents(listEvents);
+      console.log("retornando normal");
+    } else {
+      let filtSearch = listEvents.filter((item: any) =>
+        item.titulo.match(inputSearch)
+      );
+      setRowEvents(filtSearch);
+      console.log(`retornado para ${inputSearch}`);
+    }
+  }
 
   function register() {
     handleClose();
@@ -141,7 +153,10 @@ const ManagerEvents: React.FC = () => {
                   <SectionTitle text="Gerenciar Eventos" />
 
                   <TextField
-                   
+                    onChange={(e) => {
+                      searchEvent();
+                      setInputSearch(e.target.value);
+                    }}
                     style={{ marginTop: "1rem", marginBottom: "1rem" }}
                     id="outlined-basic"
                     label="Pesquisar eventos"
