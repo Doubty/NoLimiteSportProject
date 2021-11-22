@@ -42,7 +42,7 @@ const SignUp = () =>  {
         dataNascimento: "",
         tipoSanquineo: "A+",
         planoSaude: "",
-        nivel: 0,
+        nivel: 1,
         temCamisa: "PP",
         groupPedal: 1,
     });
