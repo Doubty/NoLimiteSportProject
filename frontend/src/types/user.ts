@@ -1,4 +1,5 @@
 export type Address = {
+    id?: number;
     rua: string;
     numero: string;
     bairro: string;

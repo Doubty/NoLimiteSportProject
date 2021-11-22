@@ -187,7 +187,6 @@ const ManagerUsers: React.FC = () => {
                       columns={columns}
                       pageSize={5}
                       rowsPerPageOptions={[5]}
-                      checkboxSelection
                     />
                   </div>
                 </div>

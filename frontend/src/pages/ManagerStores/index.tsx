@@ -1,51 +1,26 @@
-import { Grid, Container, Typography, CssBaseline } from "@material-ui/core";
-import React from "react";
+import { Grid, Container, Typography, CssBaseline, Fab, ListItem, ListItemText } from "@material-ui/core";
+import React, { ChangeEvent, MouseEventHandler, useEffect, useState } from "react";
 import MenuLateral from "../../components/MenuLateral";
 import NavBarDashboard from "../../components/NavBarDashboard";
 import SectionTitle from "../../components/SectionTitle";
 import "./style.css";
 import { useStyles } from "./styles";     
-import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import TextField from "@material-ui/core/TextField";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Add from "@material-ui/icons/Add";
+import AddIcon from '@material-ui/icons/Add';
 import Swal from "sweetalert2";
+import { Address, Partner, SocialMidia } from "../../types/partner";
+import gateway from "../../services/gateway";
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
-  { field: "firstName", headerName: "First name", width: 130 },
-  { field: "lastName", headerName: "Last name", width: 130 },
-  {
-    field: "age",
-    headerName: "Age",
-    type: "number",
-    width: 90,
-  },
-  {
-    field: "fullName",
-    headerName: "Full name",
-    description: "This column has a value getter and is not sortable.",
-    sortable: false,
-    width: 160,
-    valueGetter: (params: GridValueGetterParams) =>
-      `${params.getValue(params.id, "firstName") || ""} ${
-        params.getValue(params.id, "lastName") || ""
-      }`,
-  },
-];
-
-const rows = [
-  { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
-  { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
-  { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
-  { id: 4, lastName: "Stark", firstName: "Arya", age: 16 },
-  { id: 5, lastName: "Targaryen", firstName: "Daenerys", age: null },
-  { id: 6, lastName: "Melisandre", firstName: null, age: 150 },
-  { id: 7, lastName: "Clifford", firstName: "Ferrara", age: 44 },
-  { id: 8, lastName: "Frances", firstName: "Rossini", age: 36 },
-  { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
+  { field: "nome", headerName: "Loja", width: 200 },
+  { field: "email", headerName: "E-mail", width: 200 },
+  { field: "telefone", headerName: "Telefone", width: 200 },
 ];
 
 const style = {
@@ -58,13 +33,72 @@ const style = {
   border: "2px solid #000",
   boxShadow: 24,
   p: 4,
+  maxHeight: 600,
+  overflow: "scroll",
 };
 
 const ManagerStores: React.FC = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {setOpen(false); setSocialMidias([])};
+
+  const [socialMidia, setSocialMidia] = useState<SocialMidia>({
+    nome: "",
+    link: ""
+  });
+  const [socialMidias, setSocialMidias] = useState<SocialMidia[]>([]);
+
+  const [address, setAddress] = useState<Address>({
+    rua: "",
+    numero: "",
+    bairro: "",
+    complemento: "",
+    cidade: "",
+    estado: "",
+    cep: ""
+  });
+
+  const [partner, setPartner] = useState<Partner>({
+    nome: "",
+    email: "",
+    telefone: "",
+    endereco: address,
+    redeSocialList: socialMidias
+  });
+
+  const [rows, setRows] = useState<Partner[]>([]);
+
+  useEffect(() => {
+    gateway.get("/lojaParceiras/todos").then( res => {
+      const getRes : Partner [] = res.data;
+      setRows(getRes);
+    });
+  }, []);
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setPartner({...partner, [event.target.name] : event.target.value});
+  }
+
+  const handleChangeAddress = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      setAddress({...address, [event.target.name] : event.target.value});
+      setPartner({...partner, endereco: address});
+  }
+
+  const handleChangeSocialMidia = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setSocialMidia({...socialMidia, [event.target.name] : event.target.value});
+  }
+
+  const handleChangeSocialMidias = (event: any) => {
+    let midias = socialMidias;
+    midias.push(socialMidia);
+    setSocialMidias(midias);
+    setPartner({...partner, redeSocialList: socialMidias});  
+    setSocialMidia({
+      nome: "",
+      link: ""
+    })
+  }
 
   function register() {
 
@@ -74,10 +108,22 @@ const ManagerStores: React.FC = () => {
       showDenyButton: true,
       confirmButtonText: "Confirmar",
       denyButtonText: `Cancelar`,
-    }).then((result) => {
+    }).then(async (result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        Swal.fire("Operação realizada com sucesso", "", "success");
+        await gateway.post('/lojaParceiras/todos', partner).then( res => {
+          if (res.status >= 200 && res.status < 300) {
+              Swal.fire("Operação realizada com sucesso", "", "success");
+              gateway.get("/lojaParceiras/todos").then( res => {
+                const getRes : Partner [] = res.data;
+                setRows(getRes);
+              });
+          }
+          else
+            Swal.fire("Erro ao cadastrar grupo", "", "info");
+        }).catch ( err => {
+            console.log(err);
+        });
       } else if (result.isDenied) {
         Swal.fire("Operação cancelada com sucesso", "", "info");
       }
@@ -109,13 +155,12 @@ const ManagerStores: React.FC = () => {
                   <Button
                     className="buttonStyle"
                     style={{
-                      marginLeft: "42.2rem",
                       borderBottom: "none",
                       marginBottom: "1rem",
                     }}
                     onClick={handleOpen}
                   >
-                    Novo Produto <Add style={{ marginLeft: "0.2rem" }} />
+                    Novo Parceiro <Add style={{ marginLeft: "0.2rem" }} />
                   </Button>
                   <Modal
                     open={open}
@@ -129,7 +174,7 @@ const ManagerStores: React.FC = () => {
                         variant="h6"
                         component="h2"
                       >
-                        Adicionar novo produto
+                        Adicionar novo parceiro
                       </Typography>
                       <Typography id="modal-modal-description">
                         Preencha as infomrações abaixo
@@ -139,30 +184,156 @@ const ManagerStores: React.FC = () => {
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label="Nome"
+                        name="nome"
                         variant="outlined"
+                        onChange={handleChange}
                       />
+
                       <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label="E-mail"
+                        name="email"
                         variant="outlined"
+                        onChange={handleChange}
                       />
+
                       <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label="Telefone"
+                        name="telefone"
                         variant="outlined"
+                        onChange={handleChange}
                       />
+
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        Endereço
+                      </Typography>
+
                       <TextField
                         fullWidth
                         style={{ marginTop: "1rem", marginBottom: "1rem" }}
                         id="outlined-basic"
-                        label="Campo novo"
+                        label="Rua"
+                        name="rua"
                         variant="outlined"
+                        onChange={handleChangeAddress}
                       />
+
+                      <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        label="Número"
+                        name="numero"
+                        variant="outlined"
+                        onChange={handleChangeAddress}
+                      />
+
+                      <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        label="Bairro"
+                        name="bairro"
+                        variant="outlined"
+                        onChange={handleChangeAddress}
+                      />
+
+                      <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        label="Complemento"
+                        name="complemento"
+                        variant="outlined"
+                        onChange={handleChangeAddress}
+                      />
+
+                      <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        label="Cidade"
+                        name="cidade"
+                        variant="outlined"
+                        onChange={handleChangeAddress}
+                      />
+
+                      <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        label="Estado"
+                        name="estado"
+                        variant="outlined"
+                        onChange={handleChangeAddress}
+                      />
+
+                      <TextField
+                        fullWidth
+                        style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                        id="outlined-basic"
+                        label="CEP"
+                        name="cep"
+                        variant="outlined"
+                        onChange={handleChangeAddress}
+                      />
+
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        Redes Sociais
+                      </Typography>
+
+                      <div style={{display: "flex", justifyContent: "space-around", alignItems: "center"}}>
+                        <TextField
+                          fullWidth
+                          style={{ marginTop: "1rem", marginBottom: "1rem" }}
+                          id="outlined-basic"
+                          label="Nome da Rede"
+                          name="nome"
+                          variant="outlined"
+                          onChange={handleChangeSocialMidia}
+                          value={socialMidia.nome}
+                        />
+
+                        <TextField
+                          fullWidth
+                          style={{ marginTop: "1rem", marginBottom: "1rem", marginLeft: "10px" }}
+                          id="outlined-basic"
+                          label="Link"
+                          name="link"
+                          variant="outlined"
+                          onChange={handleChangeSocialMidia}
+                          value={socialMidia.link}
+                        />
+
+                        <Fab color="primary" aria-label="add" style={{marginLeft: "15px", padding: "25px", marginTop: "-5px"}} onClick={handleChangeSocialMidias}>
+                          <AddIcon />
+                        </Fab>
+                      </div>
+
+                      <ListItem style={{display: "flex", flexDirection: "column", marginBottom: "20px"}}>
+                        {
+                          socialMidias.map((midia, index) =>
+                            <ListItemText
+                              key={index}
+                              primary={midia.nome + " - " + midia.link}
+                            />
+                          )
+                        }
+                      </ListItem>
 
                       <Button
                         onClick={register}
@@ -187,7 +358,6 @@ const ManagerStores: React.FC = () => {
                       columns={columns}
                       pageSize={5}
                       rowsPerPageOptions={[5]}
-                      checkboxSelection
                     />
                   </div>
                 </div>
