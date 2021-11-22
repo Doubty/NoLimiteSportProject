@@ -1,5 +1,5 @@
 import { Grid, Container, Typography, CssBaseline, Fab, ListItem, ListItemText } from "@material-ui/core";
-import React, { ChangeEvent, MouseEventHandler, useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import MenuLateral from "../../components/MenuLateral";
 import NavBarDashboard from "../../components/NavBarDashboard";
 import SectionTitle from "../../components/SectionTitle";
