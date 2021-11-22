@@ -1,4 +1,10 @@
-import { Grid, Container, Typography, CssBaseline, Fab } from "@material-ui/core";
+import {
+  Grid,
+  Container,
+  Typography,
+  CssBaseline,
+  Fab,
+} from "@material-ui/core";
 import React, { ChangeEvent, useState, useEffect } from "react";
 import MenuLateral from "../../components/MenuLateral";
 import NavBarDashboard from "../../components/NavBarDashboard";
@@ -17,8 +23,8 @@ import { SportEvent } from "../../types/event";
 import gateway from "../../services/gateway";
 import { formatLocalDate } from "../../utils/format";
 import { getListEvents } from "../../services/gateway";
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const rows = mockEvents;
 
@@ -61,9 +67,9 @@ const ManagerEvents: React.FC = () => {
           e.stopPropagation(); // don't select this row after clicking
           setIsEditing(true);
 
-          gateway.get("/eventos/search/byId?id="+params.id).then( res => {
+          gateway.get("/eventos/search/byId?id=" + params.id).then((res) => {
             if (res.data !== undefined) {
-              let eventToBeEdited : SportEvent = res.data;
+              let eventToBeEdited: SportEvent = res.data;
               /*eventToBeEdited = {
                 ...eventToBeEdited,
                 dataSaida: formatLocalDate(eventToBeEdited.dataSaida, "yyyy-MM-dd"),
@@ -74,10 +80,10 @@ const ManagerEvents: React.FC = () => {
             }
           });
         };
-  
+
         const remove = (e: any) => {
           e.stopPropagation(); // don't select this row after clicking
-          
+
           setIsEditing(true);
           Swal.fire({
             title: "Você quer mesmo realizar a deleção?",
@@ -87,52 +93,54 @@ const ManagerEvents: React.FC = () => {
           }).then(async (result) => {
             /* Read more about isConfirmed, isDenied below */
             if (result.isConfirmed) {
-              await gateway.delete('/eventos/'+params.id).then( res => {
-                if (res.status >= 200 && res.status < 300) {
+              await gateway
+                .delete("/eventos/" + params.id)
+                .then((res) => {
+                  if (res.status >= 200 && res.status < 300) {
                     Swal.fire("Operação realizada com sucesso", "", "success");
-                    gateway.get("/eventos/todos").then( res => {
+                    gateway.get("/eventos/todos").then((res) => {
                       setListEvents(res.data);
                       setRowEvents(res.data);
                     });
-                }
-                else
-                  Swal.fire("Erro ao deletar evento", "", "error");
-              }).catch ( err => {
+                  } else Swal.fire("Erro ao deletar evento", "", "error");
+                })
+                .catch((err) => {
                   console.log(err);
-              });
+                });
             } else if (result.isDenied) {
               Swal.fire("Operação cancelada com sucesso", "", "error");
             }
           });
         };
-  
+
         const seeSubscriptions = (e: any) => {
           e.stopPropagation(); // don't select this row after clicking
-          return alert("Oeee");
+          setOpen2(true);
         };
-  
+
         return (
           <>
-          <Button onClick={edit}>
-            <EditIcon />
-          </Button>
-          <Button onClick={remove}>
-            <DeleteIcon />
-          </Button>
-          <Button variant="contained" onClick={seeSubscriptions}>
-            Ver Inscrições
-          </Button>
+            <Button onClick={edit}>
+              <EditIcon />
+            </Button>
+            <Button onClick={remove}>
+              <DeleteIcon />
+            </Button>
+            <Button variant="contained" onClick={seeSubscriptions}>
+              Ver Inscrições
+            </Button>
           </>
         );
-      }
+      },
     },
   ];
 
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
+  const [open2, setOpen2] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
-    setOpen(false); 
+    setOpen(false);
     setEventSport({
       id: -1,
       bannerUrl: "",
@@ -147,7 +155,7 @@ const ManagerEvents: React.FC = () => {
       tipoEvento: "",
       infoComplementar: "",
       valor: 0,
-    })
+    });
   };
 
   const [listEvents, setListEvents] = useState([]);
@@ -225,8 +233,7 @@ const ManagerEvents: React.FC = () => {
                 setListEvents(res.data);
                 setRowEvents(res.data);
               });
-            }
-            else Swal.fire("Erro ao cadastrar evento", "", "info");
+            } else Swal.fire("Erro ao cadastrar evento", "", "info");
           })
           .catch((err) => {
             console.log(err);
@@ -247,35 +254,36 @@ const ManagerEvents: React.FC = () => {
     }).then(async (result) => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
-        await gateway.post('/eventos', eventSport).then( res => {
-          if (res.status >= 200 && res.status < 300) {
-            setIsEditing(false);
-            Swal.fire("Operação realizada com sucesso", "", "success");
-            gateway.get("/eventos/todos").then( res => {
-              setListEvents(res.data);
-              setRowEvents(res.data);
-            });
-            setEventSport({
-              id: -1,
-              bannerUrl: "",
-              titulo: "",
-              descricao: "",
-              dataSaida: "",
-              dataRetorno: "",
-              localConcentracao: "",
-              destino: "",
-              qtdVagas: 0,
-              ritmo: "",
-              tipoEvento: "",
-              infoComplementar: "",
-              valor: 0,
-            })
-          }
-          else
-            Swal.fire("Erro ao editar produto", "", "info");
-        }).catch ( err => {
+        await gateway
+          .post("/eventos", eventSport)
+          .then((res) => {
+            if (res.status >= 200 && res.status < 300) {
+              setIsEditing(false);
+              Swal.fire("Operação realizada com sucesso", "", "success");
+              gateway.get("/eventos/todos").then((res) => {
+                setListEvents(res.data);
+                setRowEvents(res.data);
+              });
+              setEventSport({
+                id: -1,
+                bannerUrl: "",
+                titulo: "",
+                descricao: "",
+                dataSaida: "",
+                dataRetorno: "",
+                localConcentracao: "",
+                destino: "",
+                qtdVagas: 0,
+                ritmo: "",
+                tipoEvento: "",
+                infoComplementar: "",
+                valor: 0,
+              });
+            } else Swal.fire("Erro ao editar produto", "", "info");
+          })
+          .catch((err) => {
             console.log(err);
-        });
+          });
       } else if (result.isDenied) {
         Swal.fire("Operação cancelada com sucesso", "", "info");
       }
@@ -320,30 +328,57 @@ const ManagerEvents: React.FC = () => {
                   </Button>
 
                   <Modal
+                    open={open2}
+                    onClose={() => setOpen2(false)}
+                    aria-labelledby="modal-inscricao"
+                    aria-describedby="modal-modal-inscricao"
+                  >
+                    <Box sx={style}>
+                      <Typography
+                        id="modal-modal-title"
+                        variant="h6"
+                        component="h2"
+                      >
+                        Lista de inscrições realizadas
+                      </Typography>
+
+                      <Typography id="modal-modal-inscricao">
+                        Abaixe segue as inscrições para esse evento
+                      </Typography>
+                      <Button
+                        onClick={() => setOpen2(false)}
+                        style={{ float: "right", marginRight: "1rem" }}
+                        className="buttonStyle"
+                      >
+                        fechar
+                      </Button>
+                    </Box>
+                  </Modal>
+
+                  <Modal
                     open={open}
                     onClose={handleClose}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                   >
                     <Box sx={style}>
-                      {
-                        (!isEditing) ? 
-                          <Typography
+                      {!isEditing ? (
+                        <Typography
                           id="modal-modal-title"
                           variant="h6"
                           component="h2"
                         >
                           Adicionar novo produto
                         </Typography>
-                        :
+                      ) : (
                         <Typography
-                        id="modal-modal-title"
-                        variant="h6"
-                        component="h2"
+                          id="modal-modal-title"
+                          variant="h6"
+                          component="h2"
                         >
                           Editar produto
                         </Typography>
-                      }
+                      )}
                       <Typography id="modal-modal-description">
                         Preencha as infomrações abaixo
                       </Typography>
@@ -469,13 +504,21 @@ const ManagerEvents: React.FC = () => {
                       <Button
                         onClick={register}
                         className="buttonStyle"
-                        style={ (isEditing) ? { float: "right", display: "none" } : { float: "right", display: "block" }}
+                        style={
+                          isEditing
+                            ? { float: "right", display: "none" }
+                            : { float: "right", display: "block" }
+                        }
                       >
                         Cadastrar
                       </Button>
                       <Button
                         onClick={update}
-                        style={ (isEditing) ? { float: "right", display: "block" } : { float: "right", display: "none" }}
+                        style={
+                          isEditing
+                            ? { float: "right", display: "block" }
+                            : { float: "right", display: "none" }
+                        }
                         className="buttonStyle"
                       >
                         Atualizar
