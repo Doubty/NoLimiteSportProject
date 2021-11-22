@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import Swal from "sweetalert2";
 import NavBar from "../../components/NavBar";
 import gateway from "../../services/gateway";
-import { User } from "../../types/user";
+import { Address, User } from "../../types/user";
 import "./styles.css"
 
 const SignUp = () =>  {
@@ -21,14 +21,17 @@ const SignUp = () =>  {
             setSetion(section - 1);
     }
 
-    const [user, setUser] = useState<User>({
+    const [address, setAddress] = useState<Address>({
         rua: "",
         numero: "",
         bairro: "",
         complemento: "",
         cidade: "",
         estado: "",
-        cep: "",
+        cep: ""
+    });
+    const [user, setUser] = useState<User>({
+        endereco: address,
         email: "",
         senha: "",
         nome: "",
@@ -48,12 +51,19 @@ const SignUp = () =>  {
         setUser({...user, [event.target.name] : event.target.value});
     }
 
+    const handleChangeAddress = (event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        setAddress({...address, [event.target.name] : event.target.value});
+        setUser({...user, endereco: address});
+    }
+
     const history = useHistory();
 
     const register = async () => {
+        console.log(user);
         await gateway.post('/usuarios', user).then( res => {
-            if (res.status === 201)
+            if (res.status >= 200 && res.status < 300) {
                 history.push("/login", {status: true});
+            }
             else
                 Swal.fire("O cadastro falhou!", "", "error");
         }).catch ( err => {
@@ -80,13 +90,13 @@ const SignUp = () =>  {
                             </section>
 
                             <section className="signUp_section2" style={{display: section === 1 ? 'block' : 'none'}}>
-                                <input type="text" name="rua" placeholder="Rua" onChange={handleChange}/>
-                                <input type="text" name="numero" placeholder="Número" onChange={handleChange}/>
-                                <input type="text" name="bairro" placeholder="Bairro" onChange={handleChange}/>
-                                <input type="text" name="complemento" placeholder="Complemento" onChange={handleChange}/>
-                                <input type="text" name="cidade" placeholder="Cidade" onChange={handleChange}/>
-                                <input type="text" name="estado" placeholder="Estado" onChange={handleChange}/>
-                                <input type="text" name="cep" placeholder="CEP" onChange={handleChange}/>
+                                <input type="text" name="rua" placeholder="Rua" onChange={handleChangeAddress}/>
+                                <input type="text" name="numero" placeholder="Número" onChange={handleChangeAddress}/>
+                                <input type="text" name="bairro" placeholder="Bairro" onChange={handleChangeAddress}/>
+                                <input type="text" name="complemento" placeholder="Complemento" onChange={handleChangeAddress}/>
+                                <input type="text" name="cidade" placeholder="Cidade" onChange={handleChangeAddress}/>
+                                <input type="text" name="estado" placeholder="Estado" onChange={handleChangeAddress}/>
+                                <input type="text" name="cep" placeholder="CEP" onChange={handleChangeAddress}/>
                             </section>     
 
                             <section className="signUp_section3" style={{display: section === 2 ? 'block' : 'none'}}>

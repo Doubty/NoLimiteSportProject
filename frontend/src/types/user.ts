@@ -1,12 +1,16 @@
-export type User = {
-    id?: number;
+export type Address = {
     rua: string;
     numero: string;
     bairro: string;
-    complemento?: string;
+    complemento: string;
     cidade: string;
     estado: string;
     cep: string;
+}
+
+export type User = {
+    id?: number;
+    endereco?: Address;
     email: string;
     senha: string;
     nome: string;
