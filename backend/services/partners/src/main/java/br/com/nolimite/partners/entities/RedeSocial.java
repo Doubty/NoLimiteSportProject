@@ -1,6 +1,8 @@
 package br.com.nolimite.partners.entities;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -8,20 +10,25 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
-@Table(name = "tb_socialnetwork")
+@Table(name = "tb_redes_sociais")
 public class RedeSocial {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "id_partner")
+    
+    @JsonBackReference
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_loja_parceira", referencedColumnName = "id")
     private LojaParceira loja;
+    
     private String nome;
     private String link;
 
     public RedeSocial() {
+    	
     }
 
     public Long getId() {

@@ -7,6 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "tb_addresses")
 public class Endereco {
@@ -35,12 +37,13 @@ public class Endereco {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Usuario getLoja() {
+    
+    @JsonIgnore
+    public Usuario getUsuario() {
         return this.usuario;
     }
 
-    public void setLoja(Usuario usuario) {
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
 
