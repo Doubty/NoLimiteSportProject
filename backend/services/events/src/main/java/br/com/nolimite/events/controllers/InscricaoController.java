@@ -11,12 +11,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.nolimite.events.entities.Inscricao;
 import br.com.nolimite.events.repositories.InscricaoRepository;
 import br.com.nolimite.events.services.InscricaoService;
+import br.com.nolimite.events.services.RestService;
+import net.minidev.json.JSONObject;
+import net.minidev.json.JSONValue;
 
 @RestController
 @CrossOrigin
@@ -33,8 +37,10 @@ public class InscricaoController {
     }
 
     @PostMapping
-    public ResponseEntity<Inscricao> postInscricao(@RequestBody Inscricao inscricao) {
-        Inscricao inscrito = inscricaoRepo.save(inscricao);
+    public ResponseEntity<Inscricao> postInscricao(@RequestBody Inscricao inscricao, @RequestHeader("Authorization") String token) {
+        Inscricao inscrito = inscricaoService.save(inscricao, token);
+        
+        
         if (inscrito == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } else {
