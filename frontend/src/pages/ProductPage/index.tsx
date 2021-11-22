@@ -4,7 +4,7 @@ import Footer from "../../components/Footer";
 import InstagramSection from "../../components/InstagramSection";
 import NavBar from "../../components/NavBar";
 import SectionTitle from "../../components/SectionTitle";
-import { mockProducts } from "../../mockData";
+import gateway from "../../services/gateway";
 import { Product } from "../../types/product";
 import "./styles.css";
 
@@ -19,9 +19,11 @@ const ProductPage = () => {
     });
 
     useEffect(() => {
-        const theProduct = mockProducts.find(element => element.id === parseInt(productId));
-        if (theProduct !== undefined)
-            setProduct(theProduct);
+        gateway.get("/produtoes/byId?id="+productId).then(res => {
+            const theEvent = res.data;
+            if (theEvent !== undefined)
+                setProduct(theEvent);
+        });
     }, [productId]);
 
     return (
@@ -32,7 +34,7 @@ const ProductPage = () => {
                 <div className="container">
                     <div className="row">
                         <div className="col-md-5 product_image">
-                            <img src={"/img/product_imgs/" + product.img_url} alt={product.nome} />
+                            <img src={"/img/product_imgs/product1.jpg"} alt={product.nome} />
                         </div>
                         <div className="col-md-2"></div>
                         <div className="col-md-5 product_details">
