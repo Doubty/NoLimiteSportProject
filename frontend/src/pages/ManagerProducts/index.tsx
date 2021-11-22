@@ -57,7 +57,7 @@ const ManagerProducts: React.FC = () => {
           
           setIsEditing(true);
           let productToBeEdited = rows.find(product => product.id === params.id);
-          
+
           if (productToBeEdited !== undefined) {
             setProduct(productToBeEdited);
             Swal.fire({
@@ -233,7 +233,7 @@ const ManagerProducts: React.FC = () => {
                   >
                     <Box sx={style}>
                       {
-                        (isEditing) ? 
+                        (!isEditing) ? 
                           <Typography
                           id="modal-modal-title"
                           variant="h6"
