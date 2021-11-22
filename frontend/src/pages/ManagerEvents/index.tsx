@@ -1,4 +1,4 @@
-import { Grid, Container, Typography, CssBaseline } from "@material-ui/core";
+import { Grid, Container, Typography, CssBaseline, Fab } from "@material-ui/core";
 import React, { ChangeEvent, useState, useEffect } from "react";
 import MenuLateral from "../../components/MenuLateral";
 import NavBarDashboard from "../../components/NavBarDashboard";
@@ -6,7 +6,7 @@ import SectionTitle from "../../components/SectionTitle";
 import { mockEvents } from "../../mockData";
 import "./style.css";
 import { useStyles } from "./styles";
-import { DataGrid, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridApi, GridCellValue, GridColDef } from "@mui/x-data-grid";
 import TextField from "@material-ui/core/TextField";
 import Modal from "@material-ui/core/Modal";
 import Button from "@material-ui/core/Button";
@@ -17,6 +17,8 @@ import { SportEvent } from "../../types/event";
 import gateway from "../../services/gateway";
 import { formatLocalDate } from "../../utils/format";
 import { getListEvents } from "../../services/gateway";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
@@ -29,6 +31,42 @@ const columns: GridColDef[] = [
     headerName: "Quantidade de Vagas",
     type: "number",
     width: 230,
+  },
+  {
+    field: "action",
+    headerName: "Ações",
+    width: 300,
+    sortable: false,
+    renderCell: (params) => {
+      const edit = (e: any) => {
+        e.stopPropagation(); // don't select this row after clicking
+        return alert("Oeee");
+      };
+
+      const remove = (e: any) => {
+        e.stopPropagation(); // don't select this row after clicking
+        return alert("Oeee");
+      };
+
+      const seeSubscriptions = (e: any) => {
+        e.stopPropagation(); // don't select this row after clicking
+        return alert("Oeee");
+      };
+
+      return (
+        <>
+        <Button onClick={edit}>
+          <EditIcon />
+        </Button>
+        <Button onClick={remove}>
+          <DeleteIcon />
+        </Button>
+        <Button variant="contained" onClick={seeSubscriptions}>
+          Ver Inscrições
+        </Button>
+        </>
+      );
+    }
   },
 ];
 

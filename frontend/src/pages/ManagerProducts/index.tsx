@@ -14,11 +14,41 @@ import Add from "@material-ui/icons/Add";
 import Swal from "sweetalert2";
 import { Product } from "../../types/product";
 import gateway from "../../services/gateway";
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const columns: GridColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
   { field: "nome", headerName: "Nome do Produto", width: 200 },
   { field: "preco", headerName: "Preço", width: 200 },
+  {
+    field: "action",
+    headerName: "Ações",
+    width: 300,
+    sortable: false,
+    renderCell: (params) => {
+      const edit = (e: any) => {
+        e.stopPropagation(); // don't select this row after clicking
+        return alert("Oeee");
+      };
+
+      const remove = (e: any) => {
+        e.stopPropagation(); // don't select this row after clicking
+        return alert("Oeee");
+      };
+
+      return (
+        <>
+        <Button onClick={edit}>
+          <EditIcon />
+        </Button>
+        <Button onClick={remove}>
+          <DeleteIcon />
+        </Button>
+        </>
+      );
+    }
+  },
 ];
 
 const style = {
