@@ -93,8 +93,6 @@ const ManagerEvents: React.FC = () => {
       setListEvents(res.data);
       setRowEvents(res.data);
     });
-
-    console.log(listEvents);
   }, []);
 
   function searchEvent() {
@@ -124,8 +122,13 @@ const ManagerEvents: React.FC = () => {
         await gateway
           .post("/eventos", eventSport)
           .then((res) => {
-            if (res.status >= 200 && res.status < 300)
+            if (res.status >= 200 && res.status < 300) {
               Swal.fire("Operação realizada com sucesso", "", "success");
+              getListEvents().then((res) => {
+                setListEvents(res.data);
+                setRowEvents(res.data);
+              });
+            }
             else Swal.fire("Erro ao cadastrar evento", "", "info");
           })
           .catch((err) => {

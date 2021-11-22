@@ -66,8 +66,13 @@ const ManagerProducts: React.FC = () => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         await gateway.post('/produtoes', product).then( res => {
-          if (res.status >= 200 && res.status < 300)
+          if (res.status >= 200 && res.status < 300) {
               Swal.fire("Operação realizada com sucesso", "", "success");
+              gateway.get("/produtoes/todos").then( res => {
+                const getRes : Product [] = res.data;
+                setRows(getRes);
+              });
+          }
           else
             Swal.fire("Erro ao cadastrar grupo", "", "info");
         }).catch ( err => {

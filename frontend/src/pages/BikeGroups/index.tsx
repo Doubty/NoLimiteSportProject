@@ -46,7 +46,6 @@ const BikeGroups: React.FC = () => {
 
   useEffect(() => {
     gateway.get("/grupoPedals/todos").then( res => {
-      console.log(res.data);
       const getRes : PedalGroup[] = res.data;
       setRows(getRes);
     });
@@ -64,8 +63,13 @@ const BikeGroups: React.FC = () => {
       /* Read more about isConfirmed, isDenied below */
       if (result.isConfirmed) {
         await gateway.post('/grupoPedals', group).then( res => {
-          if (res.status >= 200 && res.status < 300)
+          if (res.status >= 200 && res.status < 300) {
               Swal.fire("Operação realizada com sucesso", "", "success");
+              gateway.get("/grupoPedals/todos").then( res => {
+                const getRes : PedalGroup[] = res.data;
+                setRows(getRes);
+              });
+          }
           else
             Swal.fire("Erro ao cadastrar grupo", "", "info");
         }).catch ( err => {
