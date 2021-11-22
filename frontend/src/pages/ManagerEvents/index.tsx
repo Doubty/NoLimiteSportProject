@@ -113,8 +113,14 @@ const ManagerEvents: React.FC = () => {
           });
         };
 
-        const seeSubscriptions = (e: any) => {
+        const seeSubscriptions = async (e: any) => {
           e.stopPropagation(); // don't select this row after clicking
+          await gateway
+            .get(`/eventos/inscricoesById?id=${params.id}`)
+            .then((res) => {
+              console.log({ msg: "resultado", data: res.data });
+              setListSubscribers(res.data);
+            });
           setOpen2(true);
         };
 
@@ -159,6 +165,7 @@ const ManagerEvents: React.FC = () => {
   };
 
   const [listEvents, setListEvents] = useState([]);
+  const [listSubscribers, setListSubscribers] = useState([]);
   const [rowEvents, setRowEvents] = useState(rows);
   const [inputSearch, setInputSearch] = useState("");
 
@@ -345,6 +352,13 @@ const ManagerEvents: React.FC = () => {
                       <Typography id="modal-modal-inscricao">
                         Abaixe segue as inscrições para esse evento
                       </Typography>
+                      <br />
+                      {listSubscribers.map((item: any) => (
+                        <div>
+                          <p>{`Identificação: ${item.id} - Email:${item.ciclista}`}</p>
+                          <hr />
+                        </div>
+                      ))}
                       <Button
                         onClick={() => setOpen2(false)}
                         style={{ float: "right", marginRight: "1rem" }}
