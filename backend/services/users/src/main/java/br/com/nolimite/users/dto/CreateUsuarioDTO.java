@@ -99,5 +99,12 @@ public class CreateUsuarioDTO {
 	public void setTemCamisa(String temCamisa) {
 		this.temCamisa = temCamisa;
 	}
+	public Endereco getEndereco() {
+		return endereco;
+	}
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+	
 	
 }
