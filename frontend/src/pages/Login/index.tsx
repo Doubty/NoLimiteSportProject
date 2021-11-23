@@ -36,9 +36,9 @@ const Login = () =>  {
                 login(jwtToken);
                 history.push('/dashboard');
             } else {
-                Swal.fire("O cadastro falhou!", "", "error");
+                Swal.fire("O login falhou!", "", "error");
             }
-          }).catch(err => console.error(err));
+          }).catch(err => Swal.fire("O login falhou!", "", "error"));
     }
 
     return (

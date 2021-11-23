@@ -18,41 +18,6 @@ import gateway from "../../services/gateway";
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const columns: GridColDef[] = [
-  { field: "id", headerName: "ID", width: 70 },
-  { field: "nome", headerName: "Loja", width: 200 },
-  { field: "email", headerName: "E-mail", width: 200 },
-  { field: "telefone", headerName: "Telefone", width: 200 },
-  {
-    field: "action",
-    headerName: "Ações",
-    width: 300,
-    sortable: false,
-    renderCell: (params) => {
-      const edit = (e: any) => {
-        e.stopPropagation(); // don't select this row after clicking
-        return alert("Oeee");
-      };
-
-      const remove = (e: any) => {
-        e.stopPropagation(); // don't select this row after clicking
-        return alert("Oeee");
-      };
-
-      return (
-        <>
-        <Button onClick={edit}>
-          <EditIcon />
-        </Button>
-        <Button onClick={remove}>
-          <DeleteIcon />
-        </Button>
-        </>
-      );
-    }
-  },
-];
-
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
@@ -68,10 +33,97 @@ const style = {
 };
 
 const ManagerStores: React.FC = () => {
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+
+  const columns: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 70 },
+    { field: "nome", headerName: "Loja", width: 200 },
+    { field: "email", headerName: "E-mail", width: 200 },
+    { field: "telefone", headerName: "Telefone", width: 200 },
+    {
+      field: "action",
+      headerName: "Ações",
+      width: 300,
+      sortable: false,
+      renderCell: (params) => {
+        const edit = (e: any) => {
+          e.stopPropagation(); // don't select this row after clicking
+          setIsEditing(true);
+          let partnerToBeEdited = rows.find(partner => partner.id === params.id);
+          if (partnerToBeEdited !== undefined) {
+            setPartner(partnerToBeEdited);
+            setAddress(partnerToBeEdited.endereco);
+            setSocialMidias(partnerToBeEdited.redeSocialList);
+            setOpen(true);
+          }
+        };
+  
+        const remove = (e: any) => {
+          e.stopPropagation(); // don't select this row after clicking
+          Swal.fire({
+            title: "Você quer mesmo realizar a deleção?",
+            showDenyButton: true,
+            confirmButtonText: "Confirmar",
+            denyButtonText: `Cancelar`,
+          }).then(async (result) => {
+            /* Read more about isConfirmed, isDenied below */
+            if (result.isConfirmed) {
+              await gateway.delete('/lojaParceiras/'+params.id).then( res => {
+                if (res.status >= 200 && res.status < 300) {
+                    Swal.fire("Operação realizada com sucesso", "", "success");
+                    gateway.get("/lojaParceiras/todos").then( res => {
+                      const getRes : Partner [] = res.data;
+                      setRows(getRes);
+                    });
+                }
+                else
+                  Swal.fire("Erro ao deletar parceiro", "", "error");
+              }).catch ( err => {
+                  console.log(err);
+              });
+            } else if (result.isDenied) {
+              Swal.fire("Operação cancelada com sucesso", "", "error");
+            }
+          });
+        };
+  
+        return (
+          <>
+          <Button onClick={edit}>
+            <EditIcon />
+          </Button>
+          <Button onClick={remove}>
+            <DeleteIcon />
+          </Button>
+          </>
+        );
+      }
+    },
+  ];
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
-  const handleClose = () => {setOpen(false); setSocialMidias([])};
+  const handleClose = () => {
+    setOpen(false); 
+    setSocialMidias([]);
+    setAddress({
+      rua: "",
+      numero: "",
+      bairro: "",
+      complemento: "",
+      cidade: "",
+      estado: "",
+      cep: ""
+    });
+    setPartner({
+      nome: "",
+      email: "",
+      telefone: "",
+      endereco: address,
+      redeSocialList: socialMidias
+    });
+  };
 
   const [socialMidia, setSocialMidia] = useState<SocialMidia>({
     nome: "",
@@ -150,7 +202,54 @@ const ManagerStores: React.FC = () => {
               });
           }
           else
-            Swal.fire("Erro ao cadastrar grupo", "", "info");
+            Swal.fire("Erro ao cadastrar parceiro", "", "info");
+        }).catch ( err => {
+            console.log(err);
+        });
+      } else if (result.isDenied) {
+        Swal.fire("Operação cancelada com sucesso", "", "info");
+      }
+    });
+  }
+
+  function update() {
+    handleClose();
+    Swal.fire({
+      title: "Você quer mesmo realizar a edição?",
+      showDenyButton: true,
+      confirmButtonText: "Confirmar",
+      denyButtonText: `Cancelar`,
+    }).then(async (result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        await gateway.post('/lojaParceiras/todos', partner).then( res => {
+          if (res.status >= 200 && res.status < 300) {
+            setIsEditing(false);
+            Swal.fire("Operação realizada com sucesso", "", "success");
+            gateway.get("/produtoes/todos").then( res => {
+              const getRes : Partner [] = res.data;
+              setRows(getRes);
+            });
+            setSocialMidias([]);
+            setAddress({
+              rua: "",
+              numero: "",
+              bairro: "",
+              complemento: "",
+              cidade: "",
+              estado: "",
+              cep: ""
+            });
+            setPartner({
+              nome: "",
+              email: "",
+              telefone: "",
+              endereco: address,
+              redeSocialList: socialMidias
+            });
+          }
+          else
+            Swal.fire("Erro ao editar parceiro", "", "info");
         }).catch ( err => {
             console.log(err);
         });
@@ -199,13 +298,24 @@ const ManagerStores: React.FC = () => {
                     aria-describedby="modal-modal-description"
                   >
                     <Box sx={style}>
-                      <Typography
+                    {
+                        (!isEditing) ? 
+                          <Typography
+                          id="modal-modal-title"
+                          variant="h6"
+                          component="h2"
+                        >
+                          Adicionar novo parceiro
+                        </Typography>
+                        :
+                        <Typography
                         id="modal-modal-title"
                         variant="h6"
                         component="h2"
-                      >
-                        Adicionar novo parceiro
-                      </Typography>
+                        >
+                          Editar parceiro
+                        </Typography>
+                      }
                       <Typography id="modal-modal-description">
                         Preencha as infomrações abaixo
                       </Typography>
@@ -218,6 +328,7 @@ const ManagerStores: React.FC = () => {
                         name="nome"
                         variant="outlined"
                         onChange={handleChange}
+                        value={partner.nome}
                       />
 
                       <TextField
@@ -228,6 +339,7 @@ const ManagerStores: React.FC = () => {
                         name="email"
                         variant="outlined"
                         onChange={handleChange}
+                        value={partner.email}
                       />
 
                       <TextField
@@ -238,6 +350,7 @@ const ManagerStores: React.FC = () => {
                         name="telefone"
                         variant="outlined"
                         onChange={handleChange}
+                        value={partner.telefone}
                       />
 
                       <Typography
@@ -256,6 +369,7 @@ const ManagerStores: React.FC = () => {
                         name="rua"
                         variant="outlined"
                         onChange={handleChangeAddress}
+                        value={address.rua}
                       />
 
                       <TextField
@@ -266,6 +380,7 @@ const ManagerStores: React.FC = () => {
                         name="numero"
                         variant="outlined"
                         onChange={handleChangeAddress}
+                        value={address.numero}
                       />
 
                       <TextField
@@ -276,6 +391,7 @@ const ManagerStores: React.FC = () => {
                         name="bairro"
                         variant="outlined"
                         onChange={handleChangeAddress}
+                        value={address.bairro}
                       />
 
                       <TextField
@@ -286,6 +402,7 @@ const ManagerStores: React.FC = () => {
                         name="complemento"
                         variant="outlined"
                         onChange={handleChangeAddress}
+                        value={address.complemento}
                       />
 
                       <TextField
@@ -296,6 +413,7 @@ const ManagerStores: React.FC = () => {
                         name="cidade"
                         variant="outlined"
                         onChange={handleChangeAddress}
+                        value={address.cidade}
                       />
 
                       <TextField
@@ -306,6 +424,7 @@ const ManagerStores: React.FC = () => {
                         name="estado"
                         variant="outlined"
                         onChange={handleChangeAddress}
+                        value={address.estado}
                       />
 
                       <TextField
@@ -316,6 +435,7 @@ const ManagerStores: React.FC = () => {
                         name="cep"
                         variant="outlined"
                         onChange={handleChangeAddress}
+                        value={address.cep}
                       />
 
                       <Typography
@@ -367,10 +487,17 @@ const ManagerStores: React.FC = () => {
 
                       <Button
                         onClick={register}
-                        style={{ float: "right" }}
                         className="buttonStyle"
+                        style={ (isEditing) ? { float: "right", display: "none" } : { float: "right", display: "block" }}
                       >
                         Cadastrar
+                      </Button>
+                      <Button
+                        onClick={update}
+                        style={ (isEditing) ? { float: "right", display: "block" } : { float: "right", display: "none" }}
+                        className="buttonStyle"
+                      >
+                        Atualizar
                       </Button>
                       <Button
                         onClick={handleClose}
