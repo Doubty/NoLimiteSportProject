@@ -14,3 +14,14 @@ export type SportEvent = {
     valor: number;
     //patrocinadores
 }
+
+export type Subscription = {
+    id?: number;
+    ciclista: string;
+    dataPagamento: string;
+    estaCancelada: boolean;
+    estaConfirmada: boolean;
+    eventoId: number;
+    tipoPagamento: string;
+    termoUrl: string;
+}

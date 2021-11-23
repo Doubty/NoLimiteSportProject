@@ -19,12 +19,13 @@ import Button from "@material-ui/core/Button";
 import Box from "@material-ui/core/Box";
 import Add from "@material-ui/icons/Add";
 import Swal from "sweetalert2";
-import { SportEvent } from "../../types/event";
+import { SportEvent, Subscription } from "../../types/event";
 import gateway from "../../services/gateway";
 import { formatLocalDate } from "../../utils/format";
 import { getListEvents } from "../../services/gateway";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
+import CheckIcon from '@material-ui/icons/Check';
 
 const rows = mockEvents;
 
@@ -45,8 +46,48 @@ const style = {
 const ManagerEvents: React.FC = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
 
+  const columnsSubscriptions: GridColDef[] = [
+    { field: "id", headerName: "ID", width: 100 },
+    { field: "ciclista", headerName: "Ciclista", width: 200 },
+    { field: "dataPagamento", headerName: "Data do Pagamento", width: 200 },
+    { field: "tipoPagamento", headerName: "Tipo de Pagamento", width: 200 },
+    { field: "estaConfirmada", headerName: "Confirmada", width: 160 },
+    {
+      field: "action",
+      headerName: "Ações",
+      width: 300,
+      sortable: false,
+      renderCell: (params) => {
+        const confirmSubscription = (e: any) => {
+          e.stopPropagation(); // don't select this row after clicking
+          gateway.post("/eventos/inscricoes/validateById?id=" + params.id).then( (res) => {
+            gateway
+            .get(`/eventos/inscricoesById?id=${params.id}`)
+            .then((res) => {
+              setListSubscribers(res.data);
+            });
+          });
+        };
+
+        return (
+          <>
+          {
+            listSubscribers.find(subs => subs.id === params.id)?.estaConfirmada ?
+            "Confirmada"
+            :
+            <Button onClick={confirmSubscription}>
+              Confirmar
+              <CheckIcon style={{marginLeft: 10}} />
+            </Button>
+          }
+          </>
+        );
+      },
+    },
+  ];
+
   const columns: GridColDef[] = [
-    { field: "id", headerName: "ID", width: 70 },
+    { field: "id", headerName: "ID", width: 100 },
     { field: "titulo", headerName: "Título", width: 200 },
     { field: "dataSaida", headerName: "Data de Saída", width: 200 },
     { field: "dataRetorno", headerName: "Data de Retorno", width: 200 },
@@ -118,7 +159,6 @@ const ManagerEvents: React.FC = () => {
           await gateway
             .get(`/eventos/inscricoesById?id=${params.id}`)
             .then((res) => {
-              console.log({ msg: "resultado", data: res.data });
               setListSubscribers(res.data);
             });
           setOpen2(true);
@@ -165,7 +205,7 @@ const ManagerEvents: React.FC = () => {
   };
 
   const [listEvents, setListEvents] = useState([]);
-  const [listSubscribers, setListSubscribers] = useState([]);
+  const [listSubscribers, setListSubscribers] = useState<Subscription[]>([]);
   const [rowEvents, setRowEvents] = useState(rows);
   const [inputSearch, setInputSearch] = useState("");
 
@@ -350,15 +390,17 @@ const ManagerEvents: React.FC = () => {
                       </Typography>
 
                       <Typography id="modal-modal-inscricao">
-                        Abaixe segue as inscrições para esse evento
+                        Abaixo seguem as inscrições feitas para esse evento
                       </Typography>
                       <br />
-                      {listSubscribers.map((item: any) => (
-                        <div>
-                          <p>{`Identificação: ${item.id} - Email:${item.ciclista}`}</p>
-                          <hr />
-                        </div>
-                      ))}
+                      <div style={{ height: 400, width: "100%" }}>
+                        <DataGrid
+                          rows={listSubscribers}
+                          columns={columnsSubscriptions}
+                          pageSize={5}
+                          rowsPerPageOptions={[5]}
+                        />
+                      </div>
                       <Button
                         onClick={() => setOpen2(false)}
                         style={{ float: "right", marginRight: "1rem" }}
