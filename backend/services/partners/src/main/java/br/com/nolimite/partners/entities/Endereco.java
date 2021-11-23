@@ -7,14 +7,16 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
-@Table(name = "tb_addresses")
+@Table(name = "tb_enderecos")
 public class Endereco {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @OneToOne(mappedBy = "address")
+    
+    @OneToOne(mappedBy = "endereco")
     private LojaParceira loja;
 
     private String rua;
@@ -35,7 +37,8 @@ public class Endereco {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
+    @JsonIgnore
     public LojaParceira getLoja() {
         return this.loja;
     }

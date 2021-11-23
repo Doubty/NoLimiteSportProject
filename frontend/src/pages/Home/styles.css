@@ -6,9 +6,9 @@
     margin-bottom: 98px;
 }
 
-.events_section .container .seeMore {
+.events_section .container .seeMoreEvents {
     position: relative;
-    left: 50%;
+    left: 45%;
     transform: translateX(-50%);
     font-weight: bold;
     color: #fff;

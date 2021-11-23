@@ -1,0 +1,95 @@
+.signUp_section {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-color: #101622;
+    display: flex;
+    justify-content: center;
+}
+
+.signUp_section .signUp_container {
+    position: relative;
+    height: 550px;
+    width: 764px;
+    top: 10%;
+    border-radius: 0px;
+    display: flex;
+}
+
+.signUp_section .signUp_container .image, .signUp_section .signUp_container .signUp_form {
+    width: 50%;
+    height: 100%;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.signUp_section .signUp_container .signUp_form {
+    padding: 30px;
+    background: linear-gradient(180deg, #FFFFFF 9.87%, #0258AD 56.49%, rgba(16, 22, 34, 0) 104.09%);
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.signUp_section .signUp_container .signUp_form h1 {
+    font-family: "Roboto";
+    font-size: 1.3rem;
+    color: #2b2b2b;
+    margin-bottom: 30px;
+}
+
+.signUp_section .signUp_container .signUp_form form input{
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    border: none;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    width: 100%;
+}
+
+.signUp_section .signUp_container .signUp_form form label {
+    color: #fff;
+    margin-right: 15px;
+    left: 0;
+    position: relative;
+}
+
+.signUp_section .signUp_container .signUp_form form select {
+    position: relative;
+    left: 0;
+    margin-bottom: 20px;
+    padding: 6px;
+}
+
+.signUp_section .signUp_container .signUp_form .btn_signUp {
+    padding: 8px 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.signUp_section .signUp_container .signUp_form .btn_signUp button {
+    background: none;
+    border: none;
+    color: #fff;
+    border-bottom: 2px solid #fff;
+    font-size: 1.2rem;
+}
+
+.signUp_section .signUp_container .signUp_form .btn_signUp .arrowL {
+    margin-right: 10px;
+}
+
+.signUp_section .signUp_container .signUp_form .btn_signUp .arrowR {
+    margin-left: 10px;
+}
+
+.signUp_form .signUp_section1{
+    margin-top: 60px;
+}
+
+.signUp_form .signUp_section3 {
+    margin-top: 60px;
+}

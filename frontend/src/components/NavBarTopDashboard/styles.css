@@ -1,0 +1,36 @@
+.navbar {
+    background-color: #101622;
+}
+
+.navbar .container .row {
+    width: 100%;
+}
+
+.navbar .navbar_links {
+    display: flex;
+    list-style: none;
+    position: relative;
+    justify-content: space-between;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.1rem;
+}
+
+.navbar .navbar_link {
+    margin-right: 35px;
+    text-decoration: none;
+    color: #fff;
+}
+
+.navbar_options {
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.navbar_options .navbar_link:last-child {
+    margin-right: 0;
+}

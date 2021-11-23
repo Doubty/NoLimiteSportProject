@@ -5,27 +5,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
 @Entity
-@Table(name = "tb_events")
+@Table(name = "tb_eventos")
 public class Evento {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "event")
+    @OneToMany(mappedBy = "evento", fetch = FetchType.EAGER)
     private List<Inscricao> inscricaoList = new ArrayList<Inscricao>();
 
     private String bannerUrl;
     private String titulo;
     private String descricao;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dataSaida;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate dataRetorno;
+
     private String localConcentracao;
     private String destino;
     private String qtdVagas;
@@ -33,6 +49,8 @@ public class Evento {
     private String tipoEvento;
     private String infoComplementar;
     private String temCamisa;
+    
+    private Double valor;
 
     public Evento() {
     }
@@ -148,4 +166,13 @@ public class Evento {
     public void setTemCamisa(String temCamisa) {
         this.temCamisa = temCamisa;
     }
+
+	public Double getValor() {
+		return valor;
+	}
+
+	public void setValor(Double valor) {
+		this.valor = valor;
+	}
+    
 }

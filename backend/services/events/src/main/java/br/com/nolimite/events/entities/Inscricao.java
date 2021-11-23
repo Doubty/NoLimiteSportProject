@@ -2,6 +2,7 @@ package br.com.nolimite.events.entities;
 
 import java.time.LocalDate;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,89 +11,114 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
+
+
 @Entity
-@Table(name = "tb_registrations")
+@Table(name = "tb_incricoes")
 public class Inscricao {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "id_evento")
-    private Evento evento;
+	@JoinColumn(name = "id_evento", insertable = false, updatable = false)
+	@ManyToOne(targetEntity = Evento.class)
+	@JsonIgnore
+	private Evento evento;
 
-    // ciclista possui um relacionamento com a tabela de usuário
-    private Long ciclista;
-    private boolean estaCondirmada;
-    private String tipoPagamento;
-    private LocalDate dataPagamento;
-    private String termoUrl;
-    private boolean estaCancelada;
+	@Column(name = "id_evento")
+	private Long eventoId;
 
-    public Inscricao() {
-    }
+	// ciclista possui um relacionamento com a tabela de usuário
+	private String ciclista;
+	private boolean estaConfirmada;
+	private String tipoPagamento;
 
-    public Long getId() {
-        return id;
-    }
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonDeserialize(using = LocalDateDeserializer.class)
+	@JsonSerialize(using = LocalDateSerializer.class)
+	private LocalDate dataPagamento;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+	private String termoUrl;
+	private boolean estaCancelada;
 
-    public Evento getEvento() {
-        return evento;
-    }
+	public Inscricao() {
+	}
 
-    public void setEvento(Evento evento) {
-        this.evento = evento;
-    }
+	public Long getEventoId() {
+		return eventoId;
+	}
 
-    public Long getCiclista() {
-        return ciclista;
-    }
+	public void setEventoId(Long eventoId) {
+		this.eventoId = eventoId;
+	}
 
-    public void setCiclista(Long ciclista) {
-        this.ciclista = ciclista;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public boolean isEstaCondirmada() {
-        return estaCondirmada;
-    }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-    public void setEstaCondirmada(boolean estaCondirmada) {
-        this.estaCondirmada = estaCondirmada;
-    }
+	public Evento getEvento() {
+		return evento;
+	}
 
-    public String getTipoPagamento() {
-        return tipoPagamento;
-    }
+	public void setEvento(Evento evento) {
+		this.evento = evento;
+	}
 
-    public void setTipoPagamento(String tipoPagamento) {
-        this.tipoPagamento = tipoPagamento;
-    }
+	public String getCiclista() {
+		return ciclista;
+	}
 
-    public LocalDate getDataPagamento() {
-        return dataPagamento;
-    }
+	public void setCiclista(String ciclista) {
+		this.ciclista = ciclista;
+	}
 
-    public void setDataPagamento(LocalDate dataPagamento) {
-        this.dataPagamento = dataPagamento;
-    }
+	public boolean isEstaConfirmada() {
+		return estaConfirmada;
+	}
 
-    public String getTermoUrl() {
-        return termoUrl;
-    }
+	public void setEstaConfirmada(boolean estaConfirmada) {
+		this.estaConfirmada = estaConfirmada;
+	}
 
-    public void setTermoUrl(String termoUrl) {
-        this.termoUrl = termoUrl;
-    }
+	public String getTipoPagamento() {
+		return tipoPagamento;
+	}
 
-    public boolean isEstaCancelada() {
-        return estaCancelada;
-    }
+	public void setTipoPagamento(String tipoPagamento) {
+		this.tipoPagamento = tipoPagamento;
+	}
 
-    public void setEstaCancelada(boolean estaCancelada) {
-        this.estaCancelada = estaCancelada;
-    }
+	public LocalDate getDataPagamento() {
+		return dataPagamento;
+	}
+
+	public void setDataPagamento(LocalDate dataPagamento) {
+		this.dataPagamento = dataPagamento;
+	}
+
+	public String getTermoUrl() {
+		return termoUrl;
+	}
+
+	public void setTermoUrl(String termoUrl) {
+		this.termoUrl = termoUrl;
+	}
+
+	public boolean isEstaCancelada() {
+		return estaCancelada;
+	}
+
+	public void setEstaCancelada(boolean estaCancelada) {
+		this.estaCancelada = estaCancelada;
+	}
 }

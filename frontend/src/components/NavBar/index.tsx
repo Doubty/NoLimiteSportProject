@@ -1,8 +1,28 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../../assets/img/logo.png";
+import { isAuthenticated } from "../../services/auth";
+import gateway from "../../services/gateway";
 import "./styles.css";
 
+interface User {
+    id: number;
+    nome: string;
+}
+
 const NavBar = () => {
+    const [name, setName] = useState<string>("");
+
+    useEffect(() => {
+        if (isAuthenticated()) {
+            let user : User;
+            gateway.get("/usuarios/search/byToken").then( res => {
+            user = res.data;
+            setName(user.nome);
+            });
+        }
+    }, []);
+
     return (
         <>
         <div className="navbar">
@@ -16,7 +36,7 @@ const NavBar = () => {
                     <div className="col-lg-6 col-md-7">
                         <ul className="navbar_links">
                             <li><Link className="navbar_link" to="/">Inicio</Link></li>
-                            <li><Link className="navbar_link" to="/">Produtos</Link></li>
+                            <li><Link className="navbar_link" to="/allProducts">Produtos</Link></li>
                             <li><Link className="navbar_link" to="/allEvents">Eventos</Link></li>
                             <li><Link className="navbar_link" to="/team">Equipe</Link></li>
                             <li><Link className="navbar_link" to="/">Contato</Link></li>
@@ -24,8 +44,15 @@ const NavBar = () => {
                     </div>
                     <div className="col-lg-3 col-md-3">
                         <div className="navbar_options">
-                            <Link className="navbar_link" to="/">Login</Link>
-                            <Link className="navbar_link" to="/">Registre-se</Link>
+                            {
+                                (name !== "") ? 
+                                    <Link className="navbar_link" to="/dashboard">{name}</Link>
+                                :
+                                    <>
+                                        <Link className="navbar_link" to="/login">Login</Link>
+                                        <Link className="navbar_link" to="/signUp">Registre-se</Link>
+                                    </>
+                            }
                         </div>
                     </div>
                 </div>

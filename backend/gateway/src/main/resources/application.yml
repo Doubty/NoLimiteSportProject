@@ -1,0 +1,42 @@
+server:
+ port: 8090
+ 
+spring.main.allow-bean-definition-overriding:
+ true
+
+spring:
+  cloud:
+    gateway:
+      default-filters:
+         - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+          corsConfigurations:
+            '[/**]':
+              allowedOrigins: "*"
+              allowedMethods: "*"
+              allowedHeaders: "*"
+      routes:
+      - id: userMicroservice
+        uri: https://nls-users.herokuapp.com/
+        predicates:
+        - Path=/api/usuarios/**,/api/login/**
+        
+      - id: eventMicroservice
+        uri: https://nls-events.herokuapp.com/
+        predicates:
+        - Path=/api/eventos/**
+        
+      - id: partnerMicroservice
+        uri: https://nls-partners.herokuapp.com/
+        predicates:
+        - Path=/api/lojaParceiras/**
+        
+      - id: productMicroservice
+        uri: https://nls-products.herokuapp.com/
+        predicates:
+        - Path=/api/produtoes/**
+        
+      - id: groupMicroservice
+        uri: https://nls-pedalgroups.herokuapp.com/
+        predicates:
+        - Path=/api/grupoPedals/**
