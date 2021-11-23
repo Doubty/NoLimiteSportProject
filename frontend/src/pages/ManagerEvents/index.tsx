@@ -3,7 +3,6 @@ import {
   Container,
   Typography,
   CssBaseline,
-  Fab,
 } from "@material-ui/core";
 import React, { ChangeEvent, useState, useEffect } from "react";
 import MenuLateral from "../../components/MenuLateral";
@@ -12,6 +11,7 @@ import SectionTitle from "../../components/SectionTitle";
 import { mockEvents } from "../../mockData";
 import "./style.css";
 import { useStyles } from "./styles";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { DataGrid, GridApi, GridCellValue, GridColDef } from "@mui/x-data-grid";
 import TextField from "@material-ui/core/TextField";
 import Modal from "@material-ui/core/Modal";
@@ -60,7 +60,7 @@ const ManagerEvents: React.FC = () => {
       renderCell: (params) => {
         const confirmSubscription = (e: any) => {
           e.stopPropagation(); // don't select this row after clicking
-          gateway.post("/eventos/inscricoes/validateById?id=" + params.id).then( (res) => {
+          gateway.post("/eventos/inscricoes/validateById?id=" + params.id).then( () => {
             gateway
             .get(`/eventos/inscricoesById?id=${params.id}`)
             .then((res) => {
