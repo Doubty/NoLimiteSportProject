@@ -3,6 +3,7 @@ package br.com.nolimite.events.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,9 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.nolimite.events.entities.Inscricao;
 import br.com.nolimite.events.repositories.InscricaoRepository;
 import br.com.nolimite.events.services.InscricaoService;
-import br.com.nolimite.events.services.RestService;
-import net.minidev.json.JSONObject;
-import net.minidev.json.JSONValue;
 
 @RestController
 @CrossOrigin
@@ -36,11 +34,28 @@ public class InscricaoController {
         return inscricaoRepo.findAll();
     }
 
+    @GetMapping("/byEmail")
+    public List<Inscricao> findByUsuarioEmail(@Param("email") String email) {
+        return inscricaoService.findByUsuarioEmail(email);
+    }
+
     @PostMapping
-    public ResponseEntity<Inscricao> postInscricao(@RequestBody Inscricao inscricao, @RequestHeader("Authorization") String token) {
+    public ResponseEntity<Inscricao> postInscricao(@RequestBody Inscricao inscricao,
+            @RequestHeader("Authorization") String token) {
         Inscricao inscrito = inscricaoService.save(inscricao, token);
-        
-        
+
+        if (inscrito == null) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } else {
+            return new ResponseEntity<>(inscrito, HttpStatus.ACCEPTED);
+        }
+    }
+
+    @PostMapping("/validateById")
+    public ResponseEntity<Inscricao> validate(@Param("id") Long id, @RequestHeader("Authorization") String token) {
+        Inscricao inscrito = inscricaoService.validate(id).get();
+        inscricaoRepo.save(inscrito);
+
         if (inscrito == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         } else {

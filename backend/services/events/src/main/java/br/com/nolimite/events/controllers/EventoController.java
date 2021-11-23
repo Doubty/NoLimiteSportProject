@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.nolimite.events.entities.Evento;
+import br.com.nolimite.events.entities.Inscricao;
 import br.com.nolimite.events.repositories.EventoRepository;
+import br.com.nolimite.events.repositories.InscricaoRepository;
 import br.com.nolimite.events.services.EventoService;
 
 @RestController
@@ -30,6 +32,8 @@ public class EventoController {
     EventoRepository eventoRepo;
     @Autowired
     EventoService eventoService;
+    @Autowired
+    InscricaoRepository inscricaoRepo;
 
     @GetMapping
     public List<Evento> getEventos() {
@@ -39,6 +43,11 @@ public class EventoController {
     @GetMapping("/search/byId")
 	public Optional<Evento> getByEmail(@Param("id") Long id) {
 		return eventoService.findById(id);
+	}
+    
+    @GetMapping("/inscricoesById")
+	public List<Inscricao> findByEventoId (@Param("id") Long id) {
+		return inscricaoRepo.findByEventoId(id);
 	}
 
     @PostMapping

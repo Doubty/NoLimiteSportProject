@@ -2,6 +2,7 @@ package br.com.nolimite.users.services;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ public class UsuarioService {
 	@Transactional(propagation=Propagation.REQUIRED, readOnly=false)
 	public UsuarioDTO save(CreateUsuarioDTO dto) {
 		Usuario usuario = new Usuario();
+		dto.setSenha(new BCryptPasswordEncoder().encode(dto.getSenha()));
 		usuario = mapper.map(dto, Usuario.class);
 		return mapper.map(repo.save(usuario), UsuarioDTO.class);
 	}
